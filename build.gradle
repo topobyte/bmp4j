@@ -1,0 +1,47 @@
+wrapper {
+    gradleVersion = '7.6.2'
+}
+
+apply plugin: 'java-library'
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
+
+group = pGroup
+version = pVersion
+
+if (project.hasProperty("topobyte")) {
+    apply from: 'file:///' + System.getProperty("user.home") \
+        + '/.gradle/topobyte.gradle'
+}
+
+repositories {
+    maven {
+        url 'https://mvn.topobyte.de'
+    }
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+}
+
+java {
+    withSourcesJar()
+}
+
+def pomInfo = new XmlSlurper().parse(file('info.pom'));
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            pom {
+                name = "$pomInfo.name"
+                description = "$pomInfo.description"
+                url = "$pomInfo.url"
+            }
+        }
+    }
+}

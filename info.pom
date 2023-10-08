@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <name>image4j</name>
+  <description>The image4j library allows you to read and write certain image formats in 100% pure Java.</description>
+  <url>https://github.com/topobyte/image4j</url>
+</project>
