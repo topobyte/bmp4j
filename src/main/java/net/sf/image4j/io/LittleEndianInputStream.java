@@ -9,6 +9,7 @@
 
 package net.sf.image4j.io;
 
+import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.IOException;
 
@@ -18,7 +19,7 @@ import java.io.IOException;
  * 
  * @author Ian McDonagh
  */
-public class LittleEndianInputStream extends java.io.DataInputStream
+public class LittleEndianInputStream extends DataInputStream
 		implements CountingDataInput
 {
 
@@ -48,7 +49,7 @@ public class LittleEndianInputStream extends java.io.DataInputStream
 	/**
 	 * Reads a little-endian <tt>short</tt> value
 	 * 
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 *             if an error occurs
 	 * @return <tt>short</tt> value with reversed byte order
 	 */
@@ -70,7 +71,7 @@ public class LittleEndianInputStream extends java.io.DataInputStream
 	/**
 	 * Reads a little-endian <tt>int</tt> value.
 	 * 
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 *             if an error occurs
 	 * @return <tt>int</tt> value with reversed byte order
 	 */
@@ -93,7 +94,7 @@ public class LittleEndianInputStream extends java.io.DataInputStream
 	/**
 	 * Reads a little-endian <tt>float</tt> value.
 	 * 
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 *             if an error occurs
 	 * @return <tt>float</tt> value with reversed byte order
 	 */
@@ -109,7 +110,7 @@ public class LittleEndianInputStream extends java.io.DataInputStream
 	/**
 	 * Reads a little-endian <tt>long</tt> value.
 	 * 
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 *             if an error occurs
 	 * @return <tt>long</tt> value with reversed byte order
 	 */
@@ -127,7 +128,7 @@ public class LittleEndianInputStream extends java.io.DataInputStream
 	/**
 	 * Reads a little-endian <tt>double</tt> value.
 	 * 
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 *             if an error occurs
 	 * @return <tt>double</tt> value with reversed byte order
 	 */

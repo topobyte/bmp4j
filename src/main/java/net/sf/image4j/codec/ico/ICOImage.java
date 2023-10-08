@@ -9,6 +9,9 @@
 
 package net.sf.image4j.codec.ico;
 
+import java.awt.image.BufferedImage;
+
+import net.sf.image4j.codec.bmp.BMPImage;
 import net.sf.image4j.codec.bmp.InfoHeader;
 
 /**
@@ -18,7 +21,7 @@ import net.sf.image4j.codec.bmp.InfoHeader;
  * @since 0.7
  * @author Ian McDonagh
  */
-public class ICOImage extends net.sf.image4j.codec.bmp.BMPImage
+public class ICOImage extends BMPImage
 {
 
 	protected IconEntry iconEntry;
@@ -35,8 +38,8 @@ public class ICOImage extends net.sf.image4j.codec.bmp.BMPImage
 	 * @param iconEntry
 	 *            the IconEntry structure describing the ICO image
 	 */
-	public ICOImage(java.awt.image.BufferedImage image,
-			net.sf.image4j.codec.bmp.InfoHeader infoHeader, IconEntry iconEntry)
+	public ICOImage(BufferedImage image, InfoHeader infoHeader,
+			IconEntry iconEntry)
 	{
 		super(image, infoHeader);
 		this.iconEntry = iconEntry;

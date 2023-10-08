@@ -14,10 +14,18 @@ import java.awt.image.IndexColorModel;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.imageio.ImageWriter;
+import javax.imageio.stream.ImageOutputStream;
 
 import net.sf.image4j.codec.bmp.BMPEncoder;
 import net.sf.image4j.codec.bmp.InfoHeader;
@@ -45,11 +53,10 @@ public class ICOEncoder
 	 *            the source image to encode
 	 * @param file
 	 *            the output file to which the encoded image will be written
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 *             if an exception occurs
 	 */
-	public static void write(BufferedImage image, java.io.File file)
-			throws IOException
+	public static void write(BufferedImage image, File file) throws IOException
 	{
 		write(image, -1, file);
 	}
@@ -61,10 +68,10 @@ public class ICOEncoder
 	 *            the source image to encode
 	 * @param os
 	 *            the output to which the encoded image will be written
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 *             if an exception occurs
 	 */
-	public static void write(BufferedImage image, java.io.OutputStream os)
+	public static void write(BufferedImage image, OutputStream os)
 			throws IOException
 	{
 		write(image, -1, os);
@@ -77,11 +84,11 @@ public class ICOEncoder
 	 *            the list of source images to be encoded
 	 * @param os
 	 *            the output to which the encoded image will be written
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 *             if an error occurs
 	 */
-	public static void write(List<BufferedImage> images,
-			java.io.OutputStream os) throws IOException
+	public static void write(List<BufferedImage> images, OutputStream os)
+			throws IOException
 	{
 		write(images, null, null, os);
 	}
@@ -94,10 +101,10 @@ public class ICOEncoder
 	 *            the list of source images to encode
 	 * @param file
 	 *            the file to which the encoded images will be written
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 *             if an exception occurs
 	 */
-	public static void write(List<BufferedImage> images, java.io.File file)
+	public static void write(List<BufferedImage> images, File file)
 			throws IOException
 	{
 		write(images, null, file);
@@ -114,13 +121,13 @@ public class ICOEncoder
 	 *            conversion
 	 * @param file
 	 *            the output file to which the encoded images will be written
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 *             if an error occurs
 	 */
-	public static void write(List<BufferedImage> images, int[] bpp,
-			java.io.File file) throws IOException
+	public static void write(List<BufferedImage> images, int[] bpp, File file)
+			throws IOException
 	{
-		write(images, bpp, new java.io.FileOutputStream(file));
+		write(images, bpp, new FileOutputStream(file));
 	}
 
 	/**
@@ -147,14 +154,14 @@ public class ICOEncoder
 	 *            should be performed.
 	 * @param file
 	 *            the file to which the encoded images will be written.
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 *             if an error occurred.
 	 * @since 0.6
 	 */
 	public static void write(List<BufferedImage> images, int[] bpp,
-			boolean[] compress, java.io.File file) throws IOException
+			boolean[] compress, File file) throws IOException
 	{
-		write(images, bpp, compress, new java.io.FileOutputStream(file));
+		write(images, bpp, compress, new FileOutputStream(file));
 	}
 
 	/**
@@ -169,13 +176,13 @@ public class ICOEncoder
 	 *            should be performed
 	 * @param file
 	 *            the output file to which the encoded image will be written
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 *             if an error occurs
 	 */
-	public static void write(BufferedImage image, int bpp, java.io.File file)
+	public static void write(BufferedImage image, int bpp, File file)
 			throws IOException
 	{
-		java.io.FileOutputStream fout = new java.io.FileOutputStream(file);
+		FileOutputStream fout = new FileOutputStream(file);
 		try {
 			BufferedOutputStream out = new BufferedOutputStream(fout);
 			write(image, bpp, out);
@@ -190,8 +197,8 @@ public class ICOEncoder
 
 	/**
 	 * Encodes and outputs a single image in ICO format. Convenience method,
-	 * which calls {@link #write(java.util.List,int[],java.io.OutputStream)
-	 * write(java.util.List,int[],java.io.OutputStream)}.
+	 * which calls {@link #write(List,int[],OutputStream)
+	 * write(List,int[],OutputStream)}.
 	 * 
 	 * @param image
 	 *            The image to encode.
@@ -201,13 +208,13 @@ public class ICOEncoder
 	 *            should be performed.
 	 * @param os
 	 *            The output to which the encoded image will be written.
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 *             if an error occurs when trying to write the output.
 	 */
-	public static void write(BufferedImage image, int bpp,
-			java.io.OutputStream os) throws IOException
+	public static void write(BufferedImage image, int bpp, OutputStream os)
+			throws IOException
 	{
-		List<BufferedImage> list = new java.util.ArrayList<BufferedImage>(1);
+		List<BufferedImage> list = new ArrayList<BufferedImage>(1);
 		list.add(image);
 		write(list, new int[] { bpp }, new boolean[] { false }, os);
 	}
@@ -229,11 +236,11 @@ public class ICOEncoder
 	 *            depth conversion should be performed for that image.
 	 * @param os
 	 *            The output to which the encoded images will be written.
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 *             if an error occurred.
 	 */
 	public static void write(List<BufferedImage> images, int[] bpp,
-			java.io.OutputStream os) throws IOException
+			OutputStream os) throws IOException
 	{
 		write(images, bpp, null, os);
 	}
@@ -262,12 +269,12 @@ public class ICOEncoder
 	 *            should be performed.
 	 * @param os
 	 *            The output to which the encoded images will be written.
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 *             if an error occurred.
 	 * @since 0.6
 	 */
 	public static void write(List<BufferedImage> images, int[] bpp,
-			boolean[] compress, java.io.OutputStream os) throws IOException
+			boolean[] compress, OutputStream os) throws IOException
 	{
 		LittleEndianOutputStream out = new LittleEndianOutputStream(os);
 
@@ -279,18 +286,16 @@ public class ICOEncoder
 		// file offset where images start
 		int fileOffset = 6 + count * 16;
 
-		List<InfoHeader> infoHeaders = new java.util.ArrayList<InfoHeader>(
-				count);
+		List<InfoHeader> infoHeaders = new ArrayList<InfoHeader>(count);
 
-		List<BufferedImage> converted = new java.util.ArrayList<BufferedImage>(
-				count);
+		List<BufferedImage> converted = new ArrayList<BufferedImage>(count);
 
 		List<byte[]> compressedImages = null;
 		if (compress != null) {
-			compressedImages = new java.util.ArrayList<byte[]>(count);
+			compressedImages = new ArrayList<byte[]>(count);
 		}
 
-		javax.imageio.ImageWriter pngWriter = null;
+		ImageWriter pngWriter = null;
 
 		// icon entries 16 * count
 		for (int i = 0; i < count; i++) {
@@ -353,8 +358,8 @@ public class ICOEncoder
 				out.write(compressedImage);
 			}
 
-			// javax.imageio.ImageIO.write(imgc, "png", new
-			// java.io.File("test_"+i+".png"));
+			// ImageIO.write(imgc, "png", new
+			// File("test_"+i+".png"));
 		}
 
 	}
@@ -366,13 +371,11 @@ public class ICOEncoder
 	 * @param count
 	 *            the number of images in the ICO
 	 * @param type
-	 *            one of {@link net.sf.image4j.codec.ico.ICOConstants#TYPE_ICON
-	 *            TYPE_ICON} or
-	 *            {@link net.sf.image4j.codec.ico.ICOConstants#TYPE_CURSOR
-	 *            TYPE_CURSOR}
+	 *            one of {@link ICOConstants#TYPE_ICON TYPE_ICON} or
+	 *            {@link ICOConstants#TYPE_CURSOR TYPE_CURSOR}
 	 * @param out
 	 *            the output to which the file header will be written
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 *             if an error occurs
 	 */
 	public static void writeFileHeader(int count, int type,
@@ -431,11 +434,11 @@ public class ICOEncoder
 	 *            the image to encode as the <em>AND</em> bitmap.
 	 * @param out
 	 *            the output to which the <em>AND</em> bitmap will be written
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 *             if an error occurs.
 	 */
 	public static void writeAndBitmap(BufferedImage img,
-			net.sf.image4j.io.LittleEndianOutputStream out) throws IOException
+			LittleEndianOutputStream out) throws IOException
 	{
 		WritableRaster alpha = img.getAlphaRaster();
 
@@ -590,11 +593,10 @@ public class ICOEncoder
 	/**
 	 * @since 0.6
 	 */
-	private static javax.imageio.ImageWriter getPNGImageWriter()
+	private static ImageWriter getPNGImageWriter()
 	{
-		javax.imageio.ImageWriter ret = null;
-		java.util.Iterator<javax.imageio.ImageWriter> itr = javax.imageio.ImageIO
-				.getImageWritersByFormatName("png");
+		ImageWriter ret = null;
+		Iterator<ImageWriter> itr = ImageIO.getImageWritersByFormatName("png");
 		if (itr.hasNext()) {
 			ret = itr.next();
 		}
@@ -607,9 +609,8 @@ public class ICOEncoder
 	private static byte[] encodePNG(ImageWriter pngWriter, BufferedImage img)
 			throws IOException
 	{
-		java.io.ByteArrayOutputStream bout = new java.io.ByteArrayOutputStream();
-		javax.imageio.stream.ImageOutputStream output = javax.imageio.ImageIO
-				.createImageOutputStream(bout);
+		ByteArrayOutputStream bout = new ByteArrayOutputStream();
+		ImageOutputStream output = ImageIO.createImageOutputStream(bout);
 		pngWriter.setOutput(output);
 		pngWriter.write(img);
 		bout.flush();

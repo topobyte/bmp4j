@@ -11,6 +11,8 @@ package net.sf.image4j.codec.bmp;
 
 import java.io.IOException;
 
+import net.sf.image4j.io.LittleEndianInputStream;
+
 /**
  * Represents an RGB colour entry used in the palette of an indexed image
  * (colour depth &lt;= 8).
@@ -42,11 +44,10 @@ public class ColorEntry
 	 * 
 	 * @param in
 	 *            the source input
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 *             if an error occurs
 	 */
-	public ColorEntry(net.sf.image4j.io.LittleEndianInputStream in)
-			throws IOException
+	public ColorEntry(LittleEndianInputStream in) throws IOException
 	{
 		bBlue = in.readUnsignedByte();
 		bGreen = in.readUnsignedByte();

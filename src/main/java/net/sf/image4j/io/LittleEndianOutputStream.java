@@ -11,6 +11,7 @@ package net.sf.image4j.io;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * Writes little-endian data to a target <tt>OutputStream</tt> by reversing byte
@@ -28,7 +29,7 @@ public class LittleEndianOutputStream extends DataOutputStream
 	 * @param out
 	 *            the target <tt>OutputStream</tt>
 	 */
-	public LittleEndianOutputStream(java.io.OutputStream out)
+	public LittleEndianOutputStream(OutputStream out)
 	{
 		super(out);
 	}
@@ -38,7 +39,7 @@ public class LittleEndianOutputStream extends DataOutputStream
 	 * 
 	 * @param value
 	 *            the source value to convert
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 *             if an error occurs
 	 */
 	public void writeShortLE(short value) throws IOException
@@ -52,7 +53,7 @@ public class LittleEndianOutputStream extends DataOutputStream
 	 * 
 	 * @param value
 	 *            the source value to convert
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 *             if an error occurs
 	 */
 	public void writeIntLE(int value) throws IOException
@@ -66,7 +67,7 @@ public class LittleEndianOutputStream extends DataOutputStream
 	 * 
 	 * @param value
 	 *            the source value to convert
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 *             if an error occurs
 	 */
 	public void writeFloatLE(float value) throws IOException
@@ -80,7 +81,7 @@ public class LittleEndianOutputStream extends DataOutputStream
 	 * 
 	 * @param value
 	 *            the source value to convert
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 *             if an error occurs
 	 */
 	public void writeLongLE(long value) throws IOException
@@ -94,7 +95,7 @@ public class LittleEndianOutputStream extends DataOutputStream
 	 * 
 	 * @param value
 	 *            the source value to convert
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 *             if an error occurs
 	 */
 	public void writeDoubleLE(double value) throws IOException

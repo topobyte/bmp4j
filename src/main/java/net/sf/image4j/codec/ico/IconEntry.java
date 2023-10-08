@@ -3,6 +3,7 @@ package net.sf.image4j.codec.ico;
 import java.io.IOException;
 
 import net.sf.image4j.io.LittleEndianInputStream;
+import net.sf.image4j.io.LittleEndianOutputStream;
 
 /**
  * Represents an <tt>IconEntry</tt> structure, which contains information about
@@ -54,7 +55,7 @@ public class IconEntry
 	 * 
 	 * @param in
 	 *            the source input
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 *             if an error occurs
 	 */
 	public IconEntry(LittleEndianInputStream in) throws IOException
@@ -115,11 +116,10 @@ public class IconEntry
 	 * 
 	 * @param out
 	 *            the output
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 *             if an error occurs
 	 */
-	public void write(net.sf.image4j.io.LittleEndianOutputStream out)
-			throws IOException
+	public void write(LittleEndianOutputStream out) throws IOException
 	{
 		// Width 1 byte Cursor Width (16, 32 or 64)
 		out.writeByte(bWidth);

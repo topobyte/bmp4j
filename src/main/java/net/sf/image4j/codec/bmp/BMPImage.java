@@ -9,6 +9,8 @@
 
 package net.sf.image4j.codec.bmp;
 
+import java.awt.image.BufferedImage;
+
 /**
  * Contains a decoded BMP image, as well as information about the source encoded
  * image.
@@ -20,7 +22,7 @@ public class BMPImage
 {
 
 	protected InfoHeader infoHeader;
-	protected java.awt.image.BufferedImage image;
+	protected BufferedImage image;
 
 	/**
 	 * Creates a new instance of BMPImage
@@ -31,7 +33,7 @@ public class BMPImage
 	 *            the InfoHeader structure providing information about the
 	 *            source encoded image
 	 */
-	public BMPImage(java.awt.image.BufferedImage image, InfoHeader infoHeader)
+	public BMPImage(BufferedImage image, InfoHeader infoHeader)
 	{
 		this.image = image;
 		this.infoHeader = infoHeader;
@@ -56,7 +58,7 @@ public class BMPImage
 	/**
 	 * The decoded BMP image.
 	 */
-	public java.awt.image.BufferedImage getImage()
+	public BufferedImage getImage()
 	{
 		return image;
 	}
@@ -64,7 +66,7 @@ public class BMPImage
 	/**
 	 * Sets the image to be encoded.
 	 */
-	public void setImage(java.awt.image.BufferedImage image)
+	public void setImage(BufferedImage image)
 	{
 		this.image = image;
 	}

@@ -12,15 +12,26 @@ package net.sf.image4j.codec.ico;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 
 import net.sf.image4j.codec.bmp.BMPDecoder;
 import net.sf.image4j.codec.bmp.ColorEntry;
@@ -44,7 +55,7 @@ public class ICODecoder
 	private static final int PNG_MAGIC2 = 0x0D0A1A0A;
 	private static final int PNG_MAGIC2_LE = 0x0A1A0A0D;
 
-	// private java.util.List<BufferedImage> img;
+	// private List<BufferedImage> img;
 
 	private ICODecoder()
 	{
@@ -52,19 +63,17 @@ public class ICODecoder
 
 	/**
 	 * Reads and decodes the given ICO file. Convenience method equivalent to
-	 * {@link #read(java.io.InputStream) read(new
-	 * java.io.FileInputStream(file))}.
+	 * {@link #read(InputStream) read(new FileInputStream(file))}.
 	 * 
 	 * @param file
 	 *            the source file to read
 	 * @return the list of images decoded from the ICO data
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 *             if an error occurs
 	 */
-	public static java.util.List<BufferedImage> read(java.io.File file)
-			throws IOException
+	public static List<BufferedImage> read(File file) throws IOException
 	{
-		java.io.FileInputStream fin = new java.io.FileInputStream(file);
+		FileInputStream fin = new FileInputStream(file);
 		try {
 			return read(new BufferedInputStream(fin));
 		} finally {
@@ -79,20 +88,19 @@ public class ICODecoder
 
 	/**
 	 * Reads and decodes the given ICO file, together with all metadata.
-	 * Convenience method equivalent to {@link #readExt(java.io.InputStream)
-	 * readExt(new java.io.FileInputStream(file))}.
+	 * Convenience method equivalent to {@link #readExt(InputStream) readExt(new
+	 * FileInputStream(file))}.
 	 * 
 	 * @param file
 	 *            the source file to read
 	 * @return the list of images decoded from the ICO data
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 *             if an error occurs
 	 * @since 0.7
 	 */
-	public static java.util.List<ICOImage> readExt(java.io.File file)
-			throws IOException
+	public static List<ICOImage> readExt(File file) throws IOException
 	{
-		java.io.FileInputStream fin = new java.io.FileInputStream(file);
+		FileInputStream fin = new FileInputStream(file);
 		try {
 			return readExt(new BufferedInputStream(fin));
 		} finally {
@@ -112,15 +120,13 @@ public class ICODecoder
 	 * @param is
 	 *            the source <tt>InputStream</tt> to read
 	 * @return the list of images decoded from the ICO data
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 *             if an error occurs
 	 */
-	public static java.util.List<BufferedImage> read(java.io.InputStream is)
-			throws IOException
+	public static List<BufferedImage> read(InputStream is) throws IOException
 	{
-		java.util.List<ICOImage> list = readExt(is);
-		java.util.List<BufferedImage> ret = new java.util.ArrayList<BufferedImage>(
-				list.size());
+		List<ICOImage> list = readExt(is);
+		List<BufferedImage> ret = new ArrayList<BufferedImage>(list.size());
 		for (int i = 0; i < list.size(); i++) {
 			ICOImage icoImage = list.get(i);
 			BufferedImage image = icoImage.getImage();
@@ -151,12 +157,11 @@ public class ICODecoder
 	 * @param is
 	 *            the source <tt>InputStream</tt> to read
 	 * @return the list of images decoded from the ICO data
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 *             if an error occurs
 	 * @since 0.7
 	 */
-	public static java.util.List<ICOImage> readExt(java.io.InputStream is)
-			throws IOException
+	public static List<ICOImage> readExt(InputStream is) throws IOException
 	{
 		// long t = System.currentTimeMillis();
 
@@ -337,20 +342,19 @@ public class ICODecoder
 					// IOException("Unable to read image #"+i+" - incomplete PNG
 					// compressed data");
 					// }
-					java.io.ByteArrayOutputStream bout = new java.io.ByteArrayOutputStream();
-					java.io.DataOutputStream dout = new java.io.DataOutputStream(
-							bout);
+					ByteArrayOutputStream bout = new ByteArrayOutputStream();
+					DataOutputStream dout = new DataOutputStream(bout);
 					dout.writeInt(PNG_MAGIC);
 					dout.writeInt(PNG_MAGIC2);
 					dout.write(pngData);
 					byte[] pngData2 = bout.toByteArray();
-					java.io.ByteArrayInputStream bin = new java.io.ByteArrayInputStream(
+					ByteArrayInputStream bin = new ByteArrayInputStream(
 							pngData2);
-					javax.imageio.stream.ImageInputStream input = javax.imageio.ImageIO
+					ImageInputStream input = ImageIO
 							.createImageInputStream(bin);
-					javax.imageio.ImageReader reader = getPNGImageReader();
+					ImageReader reader = getPNGImageReader();
 					reader.setInput(input);
-					java.awt.image.BufferedImage img = reader.read(0);
+					BufferedImage img = reader.read(0);
 
 					// create ICOImage
 					IconEntry iconEntry = entries[i];
@@ -381,11 +385,10 @@ public class ICODecoder
 		return ret;
 	}
 
-	private static javax.imageio.ImageReader getPNGImageReader()
+	private static ImageReader getPNGImageReader()
 	{
-		javax.imageio.ImageReader ret = null;
-		java.util.Iterator<javax.imageio.ImageReader> itr = javax.imageio.ImageIO
-				.getImageReadersByFormatName("png");
+		ImageReader ret = null;
+		Iterator<ImageReader> itr = ImageIO.getImageReadersByFormatName("png");
 		if (itr.hasNext()) {
 			ret = itr.next();
 		}

@@ -9,12 +9,21 @@
 
 package net.sf.image4j.test;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
+
+import net.sf.image4j.codec.bmp.BMPDecoder;
+import net.sf.image4j.codec.bmp.BMPEncoder;
+import net.sf.image4j.codec.ico.ICODecoder;
+import net.sf.image4j.codec.ico.ICOEncoder;
 
 /**
  *
@@ -36,10 +45,10 @@ public class Test
 		String strInFile = args[0];
 		String strOutFile = args[1];
 
-		java.io.InputStream in = null;
+		InputStream in = null;
 		try {
 
-			java.util.List<java.awt.image.BufferedImage> images;
+			List<BufferedImage> images;
 
 			/***** decode ICO and save images as BMP and PNG ****/
 
@@ -51,7 +60,7 @@ public class Test
 
 			if (!strInFile.endsWith(".ico")) {
 
-				images = new ArrayList<java.awt.image.BufferedImage>(1);
+				images = new ArrayList<BufferedImage>(1);
 				images.add(ImageIO.read(in));
 
 				System.out.println("Read image " + strInFile + "...OK");
@@ -62,7 +71,7 @@ public class Test
 
 				// load and decode ICO file
 
-				images = net.sf.image4j.codec.ico.ICODecoder.read(in);
+				images = ICODecoder.read(in);
 				System.out.println("ICO decoding...OK");
 
 				// display summary of decoded images
@@ -70,7 +79,7 @@ public class Test
 				System.out.println("  image count = " + images.size());
 				System.out.println("  image summary:");
 				for (int i = 0; i < images.size(); i++) {
-					java.awt.image.BufferedImage img = images.get(i);
+					BufferedImage img = images.get(i);
 					int bpp = img.getColorModel().getPixelSize();
 					int width = img.getWidth();
 					int height = img.getHeight();
@@ -85,18 +94,18 @@ public class Test
 				String format = "png";
 
 				for (int j = 0; j < images.size(); j++) {
-					java.awt.image.BufferedImage img = images.get(j);
+					BufferedImage img = images.get(j);
 					String name = strOutFile + "-" + j;
-					java.io.File bmpFile = new java.io.File(name + ".bmp");
-					java.io.File pngFile = new java.io.File(name + ".png");
+					File bmpFile = new File(name + ".bmp");
+					File pngFile = new File(name + ".png");
 
 					// write BMP
 					System.out.println("    writing '" + name + ".bmp'");
-					net.sf.image4j.codec.bmp.BMPEncoder.write(img, bmpFile);
+					BMPEncoder.write(img, bmpFile);
 
 					// write PNG
 					System.out.println("    writing '" + name + ".png'");
-					javax.imageio.ImageIO.write(img, format, pngFile);
+					ImageIO.write(img, format, pngFile);
 				}
 
 				System.out.println("BMP encoding...OK");
@@ -105,17 +114,16 @@ public class Test
 
 				System.out.println("  reloading BMP files:");
 
-				java.util.List<java.awt.image.BufferedImage> images2 = new java.util.ArrayList<java.awt.image.BufferedImage>(
+				List<BufferedImage> images2 = new ArrayList<BufferedImage>(
 						images.size());
 
 				for (int k = 0; k < images.size(); k++) {
 					String name = strOutFile + "-" + k + ".bmp";
-					java.io.File file = new java.io.File(name);
+					File file = new File(name);
 
 					// read BMP
 					System.out.println("    reading '" + name + "'");
-					java.awt.image.BufferedImage image = net.sf.image4j.codec.bmp.BMPDecoder
-							.read(file);
+					BufferedImage image = BMPDecoder.read(file);
 					images2.add(image);
 				}
 
@@ -127,9 +135,9 @@ public class Test
 
 			System.out.println("Encoding ICO file '" + strOutFile + "'.");
 
-			java.io.File outFile = new java.io.File(strOutFile);
+			File outFile = new File(strOutFile);
 
-			net.sf.image4j.codec.ico.ICOEncoder.write(images, outFile);
+			ICOEncoder.write(images, outFile);
 
 			System.out.println("ICO encoding...OK");
 

@@ -9,6 +9,7 @@
 
 package net.sf.image4j.io;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -24,7 +25,7 @@ import java.io.RandomAccessFile;
 public class LittleEndianRandomAccessFile extends RandomAccessFile
 {
 
-	public LittleEndianRandomAccessFile(java.io.File file, String mode)
+	public LittleEndianRandomAccessFile(File file, String mode)
 			throws FileNotFoundException
 	{
 		super(file, mode);
