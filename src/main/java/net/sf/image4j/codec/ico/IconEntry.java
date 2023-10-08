@@ -96,6 +96,7 @@ public class IconEntry
 	/**
 	 * A string representation of this <tt>IconEntry</tt> structure.
 	 */
+	@Override
 	public String toString()
 	{
 		StringBuffer sb = new StringBuffer();

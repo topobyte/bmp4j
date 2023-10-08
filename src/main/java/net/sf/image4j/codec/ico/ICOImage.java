@@ -93,6 +93,7 @@ public class ICOImage extends net.sf.image4j.codec.bmp.BMPImage
 	 * @return the InfoHeader structure, or <tt>null</tt> if there is no
 	 *         InfoHeader structure, which is possible for PNG compressed icons.
 	 */
+	@Override
 	public InfoHeader getInfoHeader()
 	{
 		return super.getInfoHeader();
@@ -126,6 +127,7 @@ public class ICOImage extends net.sf.image4j.codec.bmp.BMPImage
 	 * @return the width of the ICO image, or <tt>-1</tt> if unknown
 	 * @since 0.7alpha2
 	 */
+	@Override
 	public int getWidth()
 	{
 		return iconEntry == null ? -1
@@ -138,6 +140,7 @@ public class ICOImage extends net.sf.image4j.codec.bmp.BMPImage
 	 * @return the height of the ICO image, or <tt>-1</tt> if unknown.
 	 * @since 0.7alpha2
 	 */
+	@Override
 	public int getHeight()
 	{
 		return iconEntry == null ? -1
@@ -150,6 +153,7 @@ public class ICOImage extends net.sf.image4j.codec.bmp.BMPImage
 	 * @return the colour depth, or <tt>-1</tt> if unknown.
 	 * @since 0.7alpha2
 	 */
+	@Override
 	public int getColourDepth()
 	{
 		return iconEntry == null ? -1 : iconEntry.sBitCount;
@@ -161,6 +165,7 @@ public class ICOImage extends net.sf.image4j.codec.bmp.BMPImage
 	 * @return the number of colours, or <tt>-1</tt> if unknown.
 	 * @since 0.7alpha2
 	 */
+	@Override
 	public int getColourCount()
 	{
 		int bpp = iconEntry.sBitCount == 32 ? 24 : iconEntry.sBitCount;
@@ -175,6 +180,7 @@ public class ICOImage extends net.sf.image4j.codec.bmp.BMPImage
 	 * @return <tt>true</tt> if indexed, <tt>false</tt> if not.
 	 * @since 0.7alpha2
 	 */
+	@Override
 	public boolean isIndexed()
 	{
 		return iconEntry == null ? false : iconEntry.sBitCount <= 8;
