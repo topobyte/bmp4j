@@ -44,8 +44,8 @@ public class ImageUtil {
       ret = new BufferedImage(
           src.getWidth(), src.getHeight(), src.getType()
           );
-    }     
-    Graphics2D g = ret.createGraphics();    
+    }
+    Graphics2D g = ret.createGraphics();
     //clear alpha channel
     Composite comp = g.getComposite();
     g.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR, 0.0f));
@@ -55,8 +55,8 @@ public class ImageUtil {
      */
     ret = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g = ret.createGraphics();
-    //copy image    
+    //copy image
     g.drawImage(scaled, 0, 0, null);
-    return ret;        
-  }  
+    return ret;
+  }
 }

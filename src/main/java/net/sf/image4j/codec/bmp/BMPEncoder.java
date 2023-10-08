@@ -21,11 +21,11 @@ import net.sf.image4j.io.LittleEndianOutputStream;
  * @author Ian McDonagh
  */
 public class BMPEncoder {
-  
+
   /** Creates a new instance of BMPEncoder */
   private BMPEncoder() {
   }
-  
+
   /**
    * Encodes and writes BMP data the output file
    * @param img the image to encode
@@ -44,7 +44,7 @@ public class BMPEncoder {
 		  } catch (IOException ex) { }
 	  }
   }
-  
+
   /**
    * Encodes and writes BMP data to the output
    * @param img the image to encode
@@ -52,40 +52,40 @@ public class BMPEncoder {
    * @throws java.io.IOException if an error occurs
    */
   public static void write(BufferedImage img, java.io.OutputStream os) throws IOException {
-    
+
     // create info header
-    
+
     InfoHeader ih = createInfoHeader(img);
-    
+
     // Create colour map if the image uses an indexed colour model.
     // Images with colour depth of 8 bits or less use an indexed colour model.
-    
+
     int mapSize = 0;
     IndexColorModel icm = null;
-    
+
     if (ih.sBitCount <= 8) {
       icm = (IndexColorModel) img.getColorModel();
       mapSize = icm.getMapSize();
     }
-    
+
     // Calculate header size
-    
+
     int headerSize = 14 //file header
         + ih.iSize //info header
         ;
-    
+
     // Calculate map size
-    
+
     int mapBytes = 4 * mapSize;
-    
+
     // Calculate data offset
-    
+
     int dataOffset = headerSize + mapBytes;
-        
+
     // Calculate bytes per line
-    
+
     int bytesPerLine = 0;
-    
+
     switch (ih.sBitCount) {
       case 1:
         bytesPerLine = getBytesPerLine1(ih.iWidth);
@@ -103,26 +103,26 @@ public class BMPEncoder {
         bytesPerLine = ih.iWidth * 4;
         break;
     }
-    
+
     // calculate file size
-    
+
     int fileSize = dataOffset + bytesPerLine * ih.iHeight;
-    
+
     // output little endian byte order
-    
+
     LittleEndianOutputStream out = new LittleEndianOutputStream(os);
-    
+
     //write file header
     writeFileHeader(fileSize, dataOffset, out);
-    
+
     //write info header
     ih.write(out);
-    
+
     //write color map (bit count <= 8)
     if (ih.sBitCount <= 8) {
       writeColorMap(icm, out);
     }
-    
+
     //write raster data
     switch (ih.sBitCount) {
       case 1:
@@ -142,7 +142,7 @@ public class BMPEncoder {
         break;
     }
   }
-  
+
   /**
    * Creates an <tt>InfoHeader</tt> from the source image.
    * @param img the source image
@@ -155,12 +155,12 @@ public class BMPEncoder {
     ret.iCompression = 0;
     ret.iHeight = img.getHeight();
     ret.iWidth = img.getWidth();
-    ret.sBitCount = (short) img.getColorModel().getPixelSize();    
+    ret.sBitCount = (short) img.getColorModel().getPixelSize();
     ret.iNumColors = 1 << (ret.sBitCount == 32 ? 24 : ret.sBitCount);
     ret.iImageSize = 0;
     return ret;
   }
-  
+
   /**
    * Writes the file header.
    * @param fileSize the calculated file size for the BMP data being written
@@ -180,7 +180,7 @@ public class BMPEncoder {
     //data offset
     out.writeIntLE(dataOffset);
   }
-  
+
   /**
    * Writes the colour map resulting from the source <tt>IndexColorModel</tt>.
    * @param icm the source <tt>IndexColorModel</tt>
@@ -200,7 +200,7 @@ public class BMPEncoder {
       out.writeByte(0);
     }
   }
-  
+
   /**
    * Calculates the number of bytes per line required for the given width in pixels,
    * for a 1-bit bitmap.  Lines are always padded to the next 4-byte boundary.
@@ -217,7 +217,7 @@ public class BMPEncoder {
     }
     return ret;
   }
-  
+
   /**
    * Calculates the number of bytes per line required for the given with in pixels,
    * for a 4-bit bitmap.  Lines are always padded to the next 4-byte boundary.
@@ -231,7 +231,7 @@ public class BMPEncoder {
     }
     return ret;
   }
-  
+
   /**
    * Calculates the number of bytes per line required for the given with in pixels,
    * for a 8-bit bitmap.  Lines are always padded to the next 4-byte boundary.
@@ -245,7 +245,7 @@ public class BMPEncoder {
     }
     return ret;
   }
-  
+
   /**
    * Calculates the number of bytes per line required for the given with in pixels,
    * for a 24-bit bitmap.  Lines are always padded to the next 4-byte boundary.
@@ -259,7 +259,7 @@ public class BMPEncoder {
     }
     return ret;
   }
-  
+
   /**
    * Calculates the size in bytes of a bitmap with the specified size and colour depth.
    * @param w the width in pixels
@@ -289,7 +289,7 @@ public class BMPEncoder {
     int ret = bytesPerLine * h;
     return ret;
   }
-  
+
   /**
    * Encodes and writes raster data as a 1-bit bitmap.
    * @param raster the source raster data
@@ -298,25 +298,25 @@ public class BMPEncoder {
    */
   public static void write1(Raster raster, net.sf.image4j.io.LittleEndianOutputStream out) throws IOException {
     int bytesPerLine = getBytesPerLine1(raster.getWidth());
-    
+
     byte[] line = new byte[bytesPerLine];
-    
+
     for (int y = raster.getHeight() - 1; y >= 0; y--) {
       for (int i = 0; i < bytesPerLine; i++) {
         line[i] = 0;
       }
-      
+
       for (int x = 0; x < raster.getWidth(); x++) {
         int bi = x / 8;
         int i = x % 8;
         int index = raster.getSample(x, y, 0);
         line[bi] = setBit(line[bi], i, index);
       }
-      
+
       out.write(line);
     }
   }
-  
+
   /**
    * Encodes and writes raster data as a 4-bit bitmap.
    * @param raster the source raster data
@@ -324,52 +324,52 @@ public class BMPEncoder {
    * @throws java.io.IOException if an error occurs
    */
   public static void write4(Raster raster, net.sf.image4j.io.LittleEndianOutputStream out) throws IOException {
-    
+
     // The approach taken here is to use a buffer to hold encoded raster data
     // one line at a time.
     // Perhaps we could just write directly to output instead
-    // and avoid using a buffer altogether.  Hypothetically speaking, 
+    // and avoid using a buffer altogether.  Hypothetically speaking,
     // a very wide image would require a large line buffer here, but then again,
     // large 4 bit bitmaps are pretty uncommon, so using the line buffer approach
     // should be okay.
-    
+
     int width = raster.getWidth();
     int height = raster.getHeight();
-    
+
     // calculate bytes per line
     int bytesPerLine = getBytesPerLine4(width);
-    
+
     // line buffer
     byte[] line = new byte[bytesPerLine];
-    
-    // encode and write lines    
+
+    // encode and write lines
     for (int y = height - 1; y >= 0; y--) {
-      
+
       // clear line buffer
       for (int i = 0; i < bytesPerLine; i++) {
         line[i] = 0;
       }
-      
+
       // encode raster data for line
       for (int x = 0; x < width; x++) {
-        
+
         // calculate buffer index
         int bi = x / 2;
-        
+
         // calculate nibble index (high order or low order)
         int i = x % 2;
-        
+
         // get color index
         int index = raster.getSample(x, y, 0);
         // set color index in buffer
         line[bi] = setNibble(line[bi], i, index);
       }
-    
+
       // write line data (padding bytes included)
       out.write(line);
     }
   }
-  
+
   /**
    * Encodes and writes raster data as an 8-bit bitmap.
    * @param raster the source raster data
@@ -377,34 +377,34 @@ public class BMPEncoder {
    * @throws java.io.IOException if an error occurs
    */
   public static void write8(Raster raster, net.sf.image4j.io.LittleEndianOutputStream out) throws IOException {
-    
+
     int width = raster.getWidth();
     int height = raster.getHeight();
-    
+
     // calculate bytes per line
     int bytesPerLine = getBytesPerLine8(width);
-    
+
     // write lines
     for (int y = height - 1; y >= 0; y--) {
-      
+
       // write raster data for each line
       for (int x = 0; x < width; x++) {
-        
+
         // get color index for pixel
-        int index = raster.getSample(x, y, 0);                
-        
+        int index = raster.getSample(x, y, 0);
+
         // write color index
         out.writeByte(index);
       }
-      
+
       // write padding bytes at end of line
       for (int i = width; i < bytesPerLine; i++) {
         out.writeByte(0);
       }
-      
+
     }
   }
-  
+
   /**
    * Encodes and writes raster data as a 24-bit bitmap.
    * @param raster the source raster data
@@ -412,37 +412,37 @@ public class BMPEncoder {
    * @throws java.io.IOException if an error occurs
    */
   public static void write24(Raster raster, net.sf.image4j.io.LittleEndianOutputStream out) throws IOException {
-    
-    int width = raster.getWidth();    
+
+    int width = raster.getWidth();
     int height = raster.getHeight();
-    
+
     // calculate bytes per line
     int bytesPerLine = getBytesPerLine24(width);
-    
+
     // write lines
     for (int y = height - 1; y >= 0; y--) {
-      
+
       // write pixel data for each line
       for (int x = 0; x < width; x++) {
-        
+
         // get RGB values for pixel
         int r = raster.getSample(x, y, 0);
         int g = raster.getSample(x, y, 1);
         int b = raster.getSample(x, y, 2);
-        
+
         // write RGB values
         out.writeByte(b);
         out.writeByte(g);
         out.writeByte(r);
       }
-      
+
       // write padding bytes at end of line
       for (int i = width * 3; i < bytesPerLine; i++) {
         out.writeByte(0);
       }
     }
   }
-  
+
   /**
    * Encodes and writes raster data, together with alpha (transparency) data, as a 32-bit bitmap.
    * @param raster the source raster data
@@ -451,22 +451,22 @@ public class BMPEncoder {
    * @throws java.io.IOException if an error occurs
    */
   public static void write32(Raster raster, Raster alpha, net.sf.image4j.io.LittleEndianOutputStream out) throws IOException {
-    
+
     int width = raster.getWidth();
     int height = raster.getHeight();
-    
+
     // write lines
     for (int y = height - 1; y >= 0; y--) {
-      
+
       // write pixel data for each line
       for (int x = 0; x < width; x++) {
-        
+
         // get RGBA values
         int r = raster.getSample(x, y, 0);
         int g = raster.getSample(x, y, 1);
         int b = raster.getSample(x, y, 2);
         int a = alpha.getSample(x, y, 0);
-        
+
         // write RGBA values
         out.writeByte(b);
         out.writeByte(g);
@@ -475,7 +475,7 @@ public class BMPEncoder {
       }
     }
   }
-  
+
   /**
    * Sets a particular bit in a byte.
    * @param bits the source byte
@@ -491,7 +491,7 @@ public class BMPEncoder {
     }
     return bits;
   }
-  
+
   /**
    * Sets a particular nibble (4 bits) in a byte.
    * @param nibbles the source byte
@@ -500,14 +500,14 @@ public class BMPEncoder {
    */
   private static byte setNibble(byte nibbles, int index, int nibble) {
     nibbles |= (nibble << ((1 - index) * 4));
-    
+
     return nibbles;
   }
-  
+
   /**
    * Calculates the size in bytes for a colour map with the specified bit count.
    * @param sBitCount the bit count, which represents the colour depth
-   * @return the size of the colour map, in bytes if <tt>sBitCount</tt> is less than or equal to 8, 
+   * @return the size of the colour map, in bytes if <tt>sBitCount</tt> is less than or equal to 8,
    * otherwise <tt>0</tt> as colour maps are only used for bitmaps with a colour depth of 8 bits or less.
    */
   public static int getColorMapSize(short sBitCount) {
@@ -517,5 +517,5 @@ public class BMPEncoder {
     }
     return ret;
   }
-    
+
 }

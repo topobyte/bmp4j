@@ -43,12 +43,12 @@ public class IconEntry {
    * Position in file where the InfoHeader starts.
    */
   public int iFileOffset;
-  
+
   /**
    * Creates an <tt>IconEntry</tt> structure from the source input
    * @param in the source input
    * @throws java.io.IOException if an error occurs
-   */ 
+   */
   public IconEntry(LittleEndianInputStream in) throws IOException {
     //Width 	1 byte 	Cursor Width (16, 32, 64, 0 = 256)
     bWidth = in.readUnsignedByte();
@@ -67,7 +67,7 @@ public class IconEntry {
     //FileOffset 	4 byte 	FilePos, where InfoHeader starts
     iFileOffset = in.readIntLE();
   }
-  
+
   /**
    * Creates and <tt>IconEntry</tt> structure with default values.
    */
@@ -81,7 +81,7 @@ public class IconEntry {
     iSizeInBytes = 0;
     iFileOffset = 0;
   }
-  
+
   /**
    * A string representation of this <tt>IconEntry</tt> structure.
    */
@@ -96,7 +96,7 @@ public class IconEntry {
     sb.append(",colorCount="+bColorCount);
     return sb.toString();
   }
-  
+
   /**
    * Writes the <tt>IconEntry</tt> structure to output
    * @param out the output
