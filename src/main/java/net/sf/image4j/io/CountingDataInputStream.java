@@ -1,24 +1,32 @@
 package net.sf.image4j.io;
 
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
-public class CountingDataInputStream extends DataInputStream implements CountingDataInput {
+public class CountingDataInputStream extends DataInputStream
+		implements CountingDataInput
+{
 
-	public CountingDataInputStream(InputStream in) {
+	public CountingDataInputStream(InputStream in)
+	{
 		super(new CountingInputStream(in));
 	}
 
 	@Override
-	public int getCount() {
+	public int getCount()
+	{
 		return ((CountingInputStream) in).getCount();
 	}
-	
-	public int skip(int count, boolean strict) throws IOException {
+
+	public int skip(int count, boolean strict) throws IOException
+	{
 		return IOUtils.skip(this, count, strict);
 	}
-	
+
 	@Override
-	public String toString() {
-		return getClass().getSimpleName() + "(" +in + ") ["+getCount()+"]";
+	public String toString()
+	{
+		return getClass().getSimpleName() + "(" + in + ") [" + getCount() + "]";
 	}
 }

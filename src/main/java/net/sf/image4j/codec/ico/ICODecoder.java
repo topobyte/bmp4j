@@ -9,22 +9,33 @@
 
 package net.sf.image4j.codec.ico;
 
-import java.awt.image.*;
-import java.io.*;
-import java.util.*;
-import java.util.logging.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.WritableRaster;
+import java.io.BufferedInputStream;
+import java.io.EOFException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import javax.imageio.ImageIO;
-
-import net.sf.image4j.codec.bmp.*;
-import net.sf.image4j.io.*;
+import net.sf.image4j.codec.bmp.BMPDecoder;
+import net.sf.image4j.codec.bmp.ColorEntry;
+import net.sf.image4j.codec.bmp.InfoHeader;
+import net.sf.image4j.io.CountingInputStream;
+import net.sf.image4j.io.EndianUtils;
+import net.sf.image4j.io.LittleEndianInputStream;
 
 /**
  * Decodes images in ICO format.
  * 
  * @author Ian McDonagh
  */
-public class ICODecoder {
+public class ICODecoder
+{
 
 	private static Logger log = Logger.getLogger(ICODecoder.class.getName());
 
@@ -35,7 +46,8 @@ public class ICODecoder {
 
 	// private java.util.List<BufferedImage> img;
 
-	private ICODecoder() {
+	private ICODecoder()
+	{
 	}
 
 	/**
@@ -50,7 +62,8 @@ public class ICODecoder {
 	 *             if an error occurs
 	 */
 	public static java.util.List<BufferedImage> read(java.io.File file)
-			throws IOException {
+			throws IOException
+	{
 		java.io.FileInputStream fin = new java.io.FileInputStream(file);
 		try {
 			return read(new BufferedInputStream(fin));
@@ -58,8 +71,8 @@ public class ICODecoder {
 			try {
 				fin.close();
 			} catch (IOException ex) {
-				log.log(Level.FINE, "Failed to close file input for file "
-						+ file);
+				log.log(Level.FINE,
+						"Failed to close file input for file " + file);
 			}
 		}
 	}
@@ -77,7 +90,8 @@ public class ICODecoder {
 	 * @since 0.7
 	 */
 	public static java.util.List<ICOImage> readExt(java.io.File file)
-			throws IOException {
+			throws IOException
+	{
 		java.io.FileInputStream fin = new java.io.FileInputStream(file);
 		try {
 			return readExt(new BufferedInputStream(fin));
@@ -85,8 +99,8 @@ public class ICODecoder {
 			try {
 				fin.close();
 			} catch (IOException ex) {
-				log.log(Level.WARNING, "Failed to close file input for file "
-						+ file, ex);
+				log.log(Level.WARNING,
+						"Failed to close file input for file " + file, ex);
 			}
 		}
 	}
@@ -102,7 +116,8 @@ public class ICODecoder {
 	 *             if an error occurs
 	 */
 	public static java.util.List<BufferedImage> read(java.io.InputStream is)
-			throws IOException {
+			throws IOException
+	{
 		java.util.List<ICOImage> list = readExt(is);
 		java.util.List<BufferedImage> ret = new java.util.ArrayList<BufferedImage>(
 				list.size());
@@ -114,12 +129,14 @@ public class ICODecoder {
 		return ret;
 	}
 
-	private static IconEntry[] sortByFileOffset(IconEntry[] entries) {
+	private static IconEntry[] sortByFileOffset(IconEntry[] entries)
+	{
 		List<IconEntry> list = Arrays.asList(entries);
 		Collections.sort(list, new Comparator<IconEntry>() {
 
 			@Override
-			public int compare(IconEntry o1, IconEntry o2) {
+			public int compare(IconEntry o1, IconEntry o2)
+			{
 				return o1.iFileOffset - o2.iFileOffset;
 			}
 		});
@@ -139,7 +156,8 @@ public class ICODecoder {
 	 * @since 0.7
 	 */
 	public static java.util.List<ICOImage> readExt(java.io.InputStream is)
-			throws IOException {
+			throws IOException
+	{
 		// long t = System.currentTimeMillis();
 
 		LittleEndianInputStream in = new LittleEndianInputStream(
@@ -293,7 +311,8 @@ public class ICODecoder {
 					}
 					// create ICOImage
 					IconEntry iconEntry = entries[i];
-					ICOImage icoImage = new ICOImage(img, infoHeader, iconEntry);
+					ICOImage icoImage = new ICOImage(img, infoHeader,
+							iconEntry);
 					icoImage.setPngCompressed(false);
 					icoImage.setIconIndex(i);
 					ret.add(icoImage);
@@ -315,7 +334,8 @@ public class ICODecoder {
 					/* int count = */in.readFully(pngData);
 					// if (count != pngData.length) {
 					// throw new
-					// IOException("Unable to read image #"+i+" - incomplete PNG compressed data");
+					// IOException("Unable to read image #"+i+" - incomplete PNG
+					// compressed data");
 					// }
 					java.io.ByteArrayOutputStream bout = new java.io.ByteArrayOutputStream();
 					java.io.DataOutputStream dout = new java.io.DataOutputStream(
@@ -361,7 +381,8 @@ public class ICODecoder {
 		return ret;
 	}
 
-	private static javax.imageio.ImageReader getPNGImageReader() {
+	private static javax.imageio.ImageReader getPNGImageReader()
+	{
 		javax.imageio.ImageReader ret = null;
 		java.util.Iterator<javax.imageio.ImageReader> itr = javax.imageio.ImageIO
 				.getImageReadersByFormatName("png");

@@ -6,7 +6,8 @@ package net.sf.image4j.io;
  * 
  * @author Ian McDonagh
  */
-public class EndianUtils {
+public class EndianUtils
+{
 
 	/**
 	 * Reverses the byte order of the source <tt>short</tt> value
@@ -15,7 +16,8 @@ public class EndianUtils {
 	 *            the source value
 	 * @return the converted value
 	 */
-	public static short swapShort(short value) {
+	public static short swapShort(short value)
+	{
 		return (short) (((value & 0xFF00) >> 8) | ((value & 0x00FF) << 8));
 	}
 
@@ -26,7 +28,8 @@ public class EndianUtils {
 	 *            the source value
 	 * @return the converted value
 	 */
-	public static int swapInteger(int value) {
+	public static int swapInteger(int value)
+	{
 		return ((value & 0xFF000000) >> 24) | ((value & 0x00FF0000) >> 8)
 				| ((value & 0x0000FF00) << 8) | ((value & 0x000000FF) << 24);
 	}
@@ -38,7 +41,8 @@ public class EndianUtils {
 	 *            the source value
 	 * @return the converted value
 	 */
-	public static long swapLong(long value) {
+	public static long swapLong(long value)
+	{
 		return ((value & 0xFF00000000000000L) >> 56)
 				| ((value & 0x00FF000000000000L) >> 40)
 				| ((value & 0x0000FF0000000000L) >> 24)
@@ -56,7 +60,8 @@ public class EndianUtils {
 	 *            the source value
 	 * @return the converted value
 	 */
-	public static float swapFloat(float value) {
+	public static float swapFloat(float value)
+	{
 		int i = Float.floatToIntBits(value);
 		i = swapInteger(i);
 		return Float.intBitsToFloat(i);
@@ -69,13 +74,15 @@ public class EndianUtils {
 	 *            the source value
 	 * @return the converted value
 	 */
-	public static double swapDouble(double value) {
+	public static double swapDouble(double value)
+	{
 		long l = Double.doubleToLongBits(value);
 		l = swapLong(l);
 		return Double.longBitsToDouble(l);
 	}
 
-	public static String toHexString(int i, boolean littleEndian, int bytes) {
+	public static String toHexString(int i, boolean littleEndian, int bytes)
+	{
 		if (littleEndian) {
 			i = swapInteger(i);
 		}
@@ -90,7 +97,9 @@ public class EndianUtils {
 		return sb.toString();
 	}
 
-	public static StringBuilder toCharString(StringBuilder sb, int i, int bytes, char def) {
+	public static StringBuilder toCharString(StringBuilder sb, int i, int bytes,
+			char def)
+	{
 		int shift = 24;
 		for (int j = 0; j < bytes; j++) {
 			int b = (i >> shift) & 0xFF;
@@ -101,7 +110,8 @@ public class EndianUtils {
 		return sb;
 	}
 
-	public static String toInfoString(int info) {
+	public static String toInfoString(int info)
+	{
 		StringBuilder sb = new StringBuilder();
 		sb.append("Decimal: ").append(info);
 		sb.append(", Hex BE: ").append(toHexString(info, false, 4));

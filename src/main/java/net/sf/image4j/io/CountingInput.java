@@ -1,6 +1,7 @@
 package net.sf.image4j.io;
 
-public interface CountingInput {
+public interface CountingInput
+{
 
 	int getCount();
 }

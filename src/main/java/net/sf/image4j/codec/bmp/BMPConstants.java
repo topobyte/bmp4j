@@ -14,9 +14,11 @@ package net.sf.image4j.codec.bmp;
  * 
  * @author Ian McDonagh
  */
-public class BMPConstants {
+public class BMPConstants
+{
 
-	private BMPConstants() {
+	private BMPConstants()
+	{
 	}
 
 	/**

@@ -9,7 +9,8 @@
 
 package net.sf.image4j.test;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -19,9 +20,11 @@ import javax.imageio.ImageIO;
  *
  * @author Ian McDonagh
  */
-public class Test {
+public class Test
+{
 
-	public static void main(String[] args) {
+	public static void main(String[] args)
+	{
 
 		// input and output file names
 
@@ -29,13 +32,13 @@ public class Test {
 			System.out.println("Usage:\n\tTest <inputfile> <outputfile>");
 			System.exit(1);
 		}
-		
+
 		String strInFile = args[0];
 		String strOutFile = args[1];
 
 		java.io.InputStream in = null;
 		try {
-			
+
 			java.util.List<java.awt.image.BufferedImage> images;
 
 			/***** decode ICO and save images as BMP and PNG ****/
@@ -45,14 +48,14 @@ public class Test {
 			} else {
 				in = new FileInputStream(strInFile);
 			}
-			
+
 			if (!strInFile.endsWith(".ico")) {
 
 				images = new ArrayList<java.awt.image.BufferedImage>(1);
 				images.add(ImageIO.read(in));
-				
-				System.out.println("Read image "+strInFile+"...OK");
-				
+
+				System.out.println("Read image " + strInFile + "...OK");
+
 			} else {
 
 				System.out.println("Decoding ICO file '" + strInFile + "'.");
@@ -135,12 +138,14 @@ public class Test {
 		} finally {
 			try {
 				in.close();
-			} catch (IOException ex) { }
+			} catch (IOException ex) {
+			}
 		}
 
 	}
 
-	private static void usage() {
+	private static void usage()
+	{
 
 	}
 
