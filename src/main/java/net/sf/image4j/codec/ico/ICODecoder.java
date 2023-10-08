@@ -199,7 +199,7 @@ public class ICODecoder
 					// BMPDecoder bmp = new BMPDecoder(is);
 					InfoHeader infoHeader = BMPDecoder.readInfoHeader(in, info);
 					InfoHeader andHeader = new InfoHeader(infoHeader);
-					andHeader.iHeight = (int) (infoHeader.iHeight / 2);
+					andHeader.iHeight = infoHeader.iHeight / 2;
 					InfoHeader xorHeader = new InfoHeader(infoHeader);
 					xorHeader.iHeight = andHeader.iHeight;
 

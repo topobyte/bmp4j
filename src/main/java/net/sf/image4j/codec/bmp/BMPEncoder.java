@@ -246,7 +246,7 @@ public class BMPEncoder
 	 */
 	public static int getBytesPerLine1(int width)
 	{
-		int ret = (int) width / 8;
+		int ret = width / 8;
 		if (ret * 8 < width) {
 			ret++;
 		}
@@ -267,7 +267,7 @@ public class BMPEncoder
 	 */
 	public static int getBytesPerLine4(int width)
 	{
-		int ret = (int) width / 2;
+		int ret = width / 2;
 		if (ret % 4 != 0) {
 			ret = (ret / 4 + 1) * 4;
 		}
