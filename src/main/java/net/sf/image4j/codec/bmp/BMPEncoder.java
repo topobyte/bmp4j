@@ -89,8 +89,7 @@ public class BMPEncoder
 		// Calculate header size
 
 		int headerSize = 14 // file header
-				+ ih.iSize // info header
-		;
+				+ ih.iSize; // info header
 
 		// Calculate map size
 

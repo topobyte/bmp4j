@@ -4,4 +4,5 @@ public interface CountingInput
 {
 
 	int getCount();
+
 }
