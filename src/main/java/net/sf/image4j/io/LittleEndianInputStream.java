@@ -55,7 +55,6 @@ public class LittleEndianInputStream extends DataInputStream
 	 */
 	public short readShortLE() throws IOException
 	{
-
 		int b1 = read();
 		int b2 = read();
 
@@ -116,7 +115,6 @@ public class LittleEndianInputStream extends DataInputStream
 	 */
 	public long readLongLE() throws IOException
 	{
-
 		int i1 = readIntLE();
 		int i2 = readIntLE();
 
@@ -134,7 +132,6 @@ public class LittleEndianInputStream extends DataInputStream
 	 */
 	public double readDoubleLE() throws IOException
 	{
-
 		long l = readLongLE();
 
 		double ret = Double.longBitsToDouble(l);
