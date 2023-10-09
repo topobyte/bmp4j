@@ -47,7 +47,6 @@ public class Test
 
 		InputStream in = null;
 		try {
-
 			List<BufferedImage> images;
 
 			/***** decode ICO and save images as BMP and PNG ****/
@@ -59,14 +58,11 @@ public class Test
 			}
 
 			if (!strInFile.endsWith(".ico")) {
-
-				images = new ArrayList<BufferedImage>(1);
+				images = new ArrayList<>(1);
 				images.add(ImageIO.read(in));
 
 				System.out.println("Read image " + strInFile + "...OK");
-
 			} else {
-
 				System.out.println("Decoding ICO file '" + strInFile + "'.");
 
 				// load and decode ICO file
@@ -114,8 +110,7 @@ public class Test
 
 				System.out.println("  reloading BMP files:");
 
-				List<BufferedImage> images2 = new ArrayList<BufferedImage>(
-						images.size());
+				List<BufferedImage> images2 = new ArrayList<>(images.size());
 
 				for (int k = 0; k < images.size(); k++) {
 					String name = strOutFile + "-" + k + ".bmp";

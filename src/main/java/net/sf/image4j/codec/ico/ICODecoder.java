@@ -126,7 +126,7 @@ public class ICODecoder
 	public static List<BufferedImage> read(InputStream is) throws IOException
 	{
 		List<ICOImage> list = readExt(is);
-		List<BufferedImage> ret = new ArrayList<BufferedImage>(list.size());
+		List<BufferedImage> ret = new ArrayList<>(list.size());
 		for (int i = 0; i < list.size(); i++) {
 			ICOImage icoImage = list.get(i);
 			BufferedImage image = icoImage.getImage();
@@ -185,7 +185,7 @@ public class ICODecoder
 
 		int i = 0;
 		// images list of bitmap structures in BMP/PNG format
-		List<ICOImage> ret = new ArrayList<ICOImage>(sCount);
+		List<ICOImage> ret = new ArrayList<>(sCount);
 
 		try {
 			for (i = 0; i < sCount; i++) {

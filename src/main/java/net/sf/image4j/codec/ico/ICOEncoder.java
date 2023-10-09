@@ -214,7 +214,7 @@ public class ICOEncoder
 	public static void write(BufferedImage image, int bpp, OutputStream os)
 			throws IOException
 	{
-		List<BufferedImage> list = new ArrayList<BufferedImage>(1);
+		List<BufferedImage> list = new ArrayList<>(1);
 		list.add(image);
 		write(list, new int[] { bpp }, new boolean[] { false }, os);
 	}
@@ -286,13 +286,13 @@ public class ICOEncoder
 		// file offset where images start
 		int fileOffset = 6 + count * 16;
 
-		List<InfoHeader> infoHeaders = new ArrayList<InfoHeader>(count);
+		List<InfoHeader> infoHeaders = new ArrayList<>(count);
 
-		List<BufferedImage> converted = new ArrayList<BufferedImage>(count);
+		List<BufferedImage> converted = new ArrayList<>(count);
 
 		List<byte[]> compressedImages = null;
 		if (compress != null) {
-			compressedImages = new ArrayList<byte[]>(count);
+			compressedImages = new ArrayList<>(count);
 		}
 
 		ImageWriter pngWriter = null;

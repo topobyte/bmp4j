@@ -91,8 +91,7 @@ public class Test
 
 			System.out.println("  reloading BMP files:");
 
-			List<BufferedImage> images2 = new ArrayList<BufferedImage>(
-					images.size());
+			List<BufferedImage> images2 = new ArrayList<>(images.size());
 
 			for (int k = 0; k < images.size(); k++) {
 				String name = strInFile + "-" + k + ".bmp";
