@@ -7,11 +7,11 @@
  * and open the template in the editor.
  */
 
-package net.sf.image4j.codec.bmp;
+package de.topobyte.bmp4j.codec;
 
 import java.io.IOException;
 
-import net.sf.image4j.io.LittleEndianInputStream;
+import de.topobyte.bmp4j.io.LittleEndianInputStream;
 
 /**
  * Represents an RGB colour entry used in the palette of an indexed image

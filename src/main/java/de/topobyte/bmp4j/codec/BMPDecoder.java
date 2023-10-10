@@ -4,7 +4,7 @@
  * @author Ian McDonagh
  */
 
-package net.sf.image4j.codec.bmp;
+package de.topobyte.bmp4j.codec;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.IndexColorModel;
@@ -15,8 +15,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import net.sf.image4j.io.CountingInputStream;
-import net.sf.image4j.io.LittleEndianInputStream;
+import de.topobyte.bmp4j.io.CountingInputStream;
+import de.topobyte.bmp4j.io.LittleEndianInputStream;
 
 /**
  * Decodes images in BMP format.

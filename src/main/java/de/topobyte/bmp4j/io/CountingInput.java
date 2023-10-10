@@ -1,4 +1,4 @@
-package net.sf.image4j.io;
+package de.topobyte.bmp4j.io;
 
 public interface CountingInput
 {

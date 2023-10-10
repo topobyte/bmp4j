@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-package net.sf.image4j.codec.bmp;
+package de.topobyte.bmp4j.codec;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.IndexColorModel;
@@ -18,7 +18,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import net.sf.image4j.io.LittleEndianOutputStream;
+import de.topobyte.bmp4j.io.LittleEndianOutputStream;
 
 /**
  * Encodes images in BMP format.

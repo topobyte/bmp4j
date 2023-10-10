@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-package net.sf.image4j.codec.bmp;
+package de.topobyte.bmp4j.codec;
 
 /**
  * Provides constants used with BMP format.

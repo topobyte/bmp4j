@@ -7,12 +7,12 @@
  * and open the template in the editor.
  */
 
-package net.sf.image4j.codec.bmp;
+package de.topobyte.bmp4j.codec;
 
 import java.io.IOException;
 
-import net.sf.image4j.io.LittleEndianInputStream;
-import net.sf.image4j.io.LittleEndianOutputStream;
+import de.topobyte.bmp4j.io.LittleEndianInputStream;
+import de.topobyte.bmp4j.io.LittleEndianOutputStream;
 
 /**
  * Represents a bitmap <tt>InfoHeader</tt> structure, which provides header

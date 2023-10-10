@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-package net.sf.image4j.io;
+package de.topobyte.bmp4j.io;
 
 import java.io.DataInputStream;
 import java.io.EOFException;
