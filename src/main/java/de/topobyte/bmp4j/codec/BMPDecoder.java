@@ -268,7 +268,12 @@ public class BMPDecoder
 				&& infoHeader.iCompression == BMPConstants.BI_RGB) {
 
 			img = read32(infoHeader, lis);
+		}
+		// 32bit uncompressed
+		else if (infoHeader.sBitCount == 32
+				&& infoHeader.iCompression == BMPConstants.BI_BITFIELDS) {
 
+			img = read32(infoHeader, lis);
 		} else {
 			throw new IOException("Unrecognized bitmap format: bit count="
 					+ infoHeader.sBitCount + ", compression="
