@@ -74,14 +74,14 @@ public class TestHeaders
 		System.out.println(
 				"size, offset: " + header.fileSize + ", " + header.dataOffset);
 		InfoHeader info = BMPDecoder.readInfoHeader(lis);
-		System.out.println("header size: " + info.iSize);
-		System.out.println("bits: " + info.sBitCount);
+		System.out.println("header size: " + info.getSize());
+		System.out.println("bits: " + info.getBitCount());
 		System.out.println(
-				"compression: " + compressionNames.get(info.iCompression));
+				"compression: " + compressionNames.get(info.getCompression()));
 
-		Assert.assertEquals(expectedHeaderSize, info.iSize);
-		Assert.assertEquals(expectedBits, info.sBitCount);
-		Assert.assertEquals(expectedCompression, info.iCompression);
+		Assert.assertEquals(expectedHeaderSize, info.getSize());
+		Assert.assertEquals(expectedBits, info.getBitCount());
+		Assert.assertEquals(expectedCompression, info.getCompression());
 	}
 
 }

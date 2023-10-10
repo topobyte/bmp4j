@@ -166,18 +166,20 @@ public class BMPDecoder
 	public static InfoHeader readInfoHeader(LittleEndianInputStream lis)
 			throws IOException
 	{
-		InfoHeader infoHeader = new InfoHeader(lis);
-		return infoHeader;
+		int iSize = lis.readIntLE();
+		return readInfoHeader(lis, iSize);
 	}
 
-	/**
-	 * @since 0.6
-	 */
 	public static InfoHeader readInfoHeader(LittleEndianInputStream lis,
 			int infoSize) throws IOException
 	{
-		InfoHeader infoHeader = new InfoHeader(lis, infoSize);
-		return infoHeader;
+		if (infoSize == BMPConstants.HEADER_LENGTH_3) {
+			return new InfoHeader3(lis);
+		} else if (infoSize == BMPConstants.HEADER_LENGTH_5) {
+			return new InfoHeader5(lis);
+		}
+		throw new IOException(
+				String.format("Invalid header size %d", infoSize));
 	}
 
 	/**
@@ -204,7 +206,7 @@ public class BMPDecoder
 		ColorEntry[] colorTable = null;
 
 		// color table is only present for 1, 4 or 8 bit (indexed) images
-		if (infoHeader.sBitCount <= 8) {
+		if (infoHeader.getBitCount() <= 8) {
 			colorTable = readColorTable(infoHeader, lis);
 		}
 
@@ -236,48 +238,48 @@ public class BMPDecoder
 		BufferedImage img = null;
 
 		// 1-bit (monochrome) uncompressed
-		if (infoHeader.sBitCount == 1
-				&& infoHeader.iCompression == BMPConstants.BI_RGB) {
+		if (infoHeader.getBitCount() == 1
+				&& infoHeader.getCompression() == BMPConstants.BI_RGB) {
 
 			img = read1(infoHeader, lis, colorTable);
 
 		}
 		// 4-bit uncompressed
-		else if (infoHeader.sBitCount == 4
-				&& infoHeader.iCompression == BMPConstants.BI_RGB) {
+		else if (infoHeader.getBitCount() == 4
+				&& infoHeader.getCompression() == BMPConstants.BI_RGB) {
 
 			img = read4(infoHeader, lis, colorTable);
 
 		}
 		// 8-bit uncompressed
-		else if (infoHeader.sBitCount == 8
-				&& infoHeader.iCompression == BMPConstants.BI_RGB) {
+		else if (infoHeader.getBitCount() == 8
+				&& infoHeader.getCompression() == BMPConstants.BI_RGB) {
 
 			img = read8(infoHeader, lis, colorTable);
 
 		}
 		// 24-bit uncompressed
-		else if (infoHeader.sBitCount == 24
-				&& infoHeader.iCompression == BMPConstants.BI_RGB) {
+		else if (infoHeader.getBitCount() == 24
+				&& infoHeader.getCompression() == BMPConstants.BI_RGB) {
 
 			img = read24(infoHeader, lis);
 
 		}
 		// 32bit uncompressed
-		else if (infoHeader.sBitCount == 32
-				&& infoHeader.iCompression == BMPConstants.BI_RGB) {
+		else if (infoHeader.getBitCount() == 32
+				&& infoHeader.getCompression() == BMPConstants.BI_RGB) {
 
 			img = read32(infoHeader, lis);
 		}
 		// 32bit uncompressed
-		else if (infoHeader.sBitCount == 32
-				&& infoHeader.iCompression == BMPConstants.BI_BITFIELDS) {
+		else if (infoHeader.getBitCount() == 32
+				&& infoHeader.getCompression() == BMPConstants.BI_BITFIELDS) {
 
 			img = read32(infoHeader, lis);
 		} else {
 			throw new IOException("Unrecognized bitmap format: bit count="
-					+ infoHeader.sBitCount + ", compression="
-					+ infoHeader.iCompression);
+					+ infoHeader.getBitCount() + ", compression="
+					+ infoHeader.getCompression());
 		}
 
 		return img;
@@ -300,8 +302,8 @@ public class BMPDecoder
 	public static ColorEntry[] readColorTable(InfoHeader infoHeader,
 			LittleEndianInputStream lis) throws IOException
 	{
-		ColorEntry[] colorTable = new ColorEntry[infoHeader.iNumColors];
-		for (int i = 0; i < infoHeader.iNumColors; i++) {
+		ColorEntry[] colorTable = new ColorEntry[infoHeader.getNumColors()];
+		for (int i = 0; i < infoHeader.getNumColors(); i++) {
 			ColorEntry ce = new ColorEntry(lis);
 			colorTable[i] = ce;
 		}
@@ -341,8 +343,8 @@ public class BMPDecoder
 		IndexColorModel icm = new IndexColorModel(1, 2, ar, ag, ab);
 
 		// Create indexed image
-		BufferedImage img = new BufferedImage(infoHeader.iWidth,
-				infoHeader.iHeight, BufferedImage.TYPE_BYTE_BINARY, icm);
+		BufferedImage img = new BufferedImage(infoHeader.getWidth(),
+				infoHeader.getHeight(), BufferedImage.TYPE_BYTE_BINARY, icm);
 		// We'll use the raster to set samples instead of RGB values.
 		// The SampleModel of an indexed image interprets samples as
 		// the index of the colour for a pixel, which is perfect for use here.
@@ -350,7 +352,7 @@ public class BMPDecoder
 
 		// padding
 
-		int dataBitsPerLine = infoHeader.iWidth;
+		int dataBitsPerLine = infoHeader.getWidth();
 		int bitsPerLine = dataBitsPerLine;
 		if (bitsPerLine % 32 != 0) {
 			bitsPerLine = (bitsPerLine / 32 + 1) * 32;
@@ -361,12 +363,12 @@ public class BMPDecoder
 		int bytesPerLine = bitsPerLine / 8;
 		int[] line = new int[bytesPerLine];
 
-		for (int y = infoHeader.iHeight - 1; y >= 0; y--) {
+		for (int y = infoHeader.getHeight() - 1; y >= 0; y--) {
 			for (int i = 0; i < bytesPerLine; i++) {
 				line[i] = lis.readUnsignedByte();
 			}
 
-			for (int x = 0; x < infoHeader.iWidth; x++) {
+			for (int x = 0; x < infoHeader.getWidth(); x++) {
 				int i = x / 8;
 				int v = line[i];
 				int b = x % 8;
@@ -411,16 +413,16 @@ public class BMPDecoder
 
 		getColorTable(colorTable, ar, ag, ab);
 
-		IndexColorModel icm = new IndexColorModel(4, infoHeader.iNumColors, ar,
-				ag, ab);
+		IndexColorModel icm = new IndexColorModel(4, infoHeader.getNumColors(),
+				ar, ag, ab);
 
-		BufferedImage img = new BufferedImage(infoHeader.iWidth,
-				infoHeader.iHeight, BufferedImage.TYPE_BYTE_BINARY, icm);
+		BufferedImage img = new BufferedImage(infoHeader.getWidth(),
+				infoHeader.getHeight(), BufferedImage.TYPE_BYTE_BINARY, icm);
 
 		WritableRaster raster = img.getRaster();
 
 		// padding
-		int bitsPerLine = infoHeader.iWidth * 4;
+		int bitsPerLine = infoHeader.getWidth() * 4;
 		if (bitsPerLine % 32 != 0) {
 			bitsPerLine = (bitsPerLine / 32 + 1) * 32;
 		}
@@ -428,7 +430,7 @@ public class BMPDecoder
 
 		int[] line = new int[bytesPerLine];
 
-		for (int y = infoHeader.iHeight - 1; y >= 0; y--) {
+		for (int y = infoHeader.getHeight() - 1; y >= 0; y--) {
 			// scan line
 			for (int i = 0; i < bytesPerLine; i++) {
 				int b = lis.readUnsignedByte();
@@ -436,7 +438,7 @@ public class BMPDecoder
 			}
 
 			// get pixels
-			for (int x = 0; x < infoHeader.iWidth; x++) {
+			for (int x = 0; x < infoHeader.getWidth(); x++) {
 				// get byte index for line
 				int b = x / 2; // 2 pixels per byte
 				int i = x % 2;
@@ -481,11 +483,11 @@ public class BMPDecoder
 
 		getColorTable(colorTable, ar, ag, ab);
 
-		IndexColorModel icm = new IndexColorModel(8, infoHeader.iNumColors, ar,
-				ag, ab);
+		IndexColorModel icm = new IndexColorModel(8, infoHeader.getNumColors(),
+				ar, ag, ab);
 
-		BufferedImage img = new BufferedImage(infoHeader.iWidth,
-				infoHeader.iHeight, BufferedImage.TYPE_BYTE_INDEXED, icm);
+		BufferedImage img = new BufferedImage(infoHeader.getWidth(),
+				infoHeader.getHeight(), BufferedImage.TYPE_BYTE_INDEXED, icm);
 
 		WritableRaster raster = img.getRaster();
 
@@ -497,15 +499,15 @@ public class BMPDecoder
 		 */
 
 		// padding
-		int dataPerLine = infoHeader.iWidth;
+		int dataPerLine = infoHeader.getWidth();
 		int bytesPerLine = dataPerLine;
 		if (bytesPerLine % 4 != 0) {
 			bytesPerLine = (bytesPerLine / 4 + 1) * 4;
 		}
 		int padBytesPerLine = bytesPerLine - dataPerLine;
 
-		for (int y = infoHeader.iHeight - 1; y >= 0; y--) {
-			for (int x = 0; x < infoHeader.iWidth; x++) {
+		for (int y = infoHeader.getHeight() - 1; y >= 0; y--) {
+			for (int x = 0; x < infoHeader.getWidth(); x++) {
 				int b = lis.readUnsignedByte();
 				// int clr = c[b];
 				// img.setRGB(x, y, clr);
@@ -542,21 +544,21 @@ public class BMPDecoder
 		// lines padded to nearest 32 bits
 		// no alpha
 
-		BufferedImage img = new BufferedImage(infoHeader.iWidth,
-				infoHeader.iHeight, BufferedImage.TYPE_INT_RGB);
+		BufferedImage img = new BufferedImage(infoHeader.getWidth(),
+				infoHeader.getHeight(), BufferedImage.TYPE_INT_RGB);
 
 		WritableRaster raster = img.getRaster();
 
 		// padding to nearest 32 bits
-		int dataPerLine = infoHeader.iWidth * 3;
+		int dataPerLine = infoHeader.getWidth() * 3;
 		int bytesPerLine = dataPerLine;
 		if (bytesPerLine % 4 != 0) {
 			bytesPerLine = (bytesPerLine / 4 + 1) * 4;
 		}
 		int padBytesPerLine = bytesPerLine - dataPerLine;
 
-		for (int y = infoHeader.iHeight - 1; y >= 0; y--) {
-			for (int x = 0; x < infoHeader.iWidth; x++) {
+		for (int y = infoHeader.getHeight() - 1; y >= 0; y--) {
+			for (int x = 0; x < infoHeader.getWidth(); x++) {
 				int b = lis.readUnsignedByte();
 				int g = lis.readUnsignedByte();
 				int r = lis.readUnsignedByte();
@@ -597,14 +599,14 @@ public class BMPDecoder
 		// alpha 1
 		// No padding since each pixel = 32 bits
 
-		BufferedImage img = new BufferedImage(infoHeader.iWidth,
-				infoHeader.iHeight, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage img = new BufferedImage(infoHeader.getWidth(),
+				infoHeader.getHeight(), BufferedImage.TYPE_INT_ARGB);
 
 		WritableRaster rgb = img.getRaster();
 		WritableRaster alpha = img.getAlphaRaster();
 
-		for (int y = infoHeader.iHeight - 1; y >= 0; y--) {
-			for (int x = 0; x < infoHeader.iWidth; x++) {
+		for (int y = infoHeader.getHeight() - 1; y >= 0; y--) {
+			for (int x = 0; x < infoHeader.getWidth(); x++) {
 				int b = lis.readUnsignedByte();
 				int g = lis.readUnsignedByte();
 				int r = lis.readUnsignedByte();
@@ -686,7 +688,6 @@ public class BMPDecoder
 	 * @throws IOException
 	 *             if an error occurs
 	 * @return the decoded image read from the source file
-	 * @since 0.7
 	 */
 	public static BMPImage readExt(File file) throws IOException
 	{
@@ -709,7 +710,6 @@ public class BMPDecoder
 	 * @throws IOException
 	 *             if an error occurs
 	 * @return the decoded image read from the source file
-	 * @since 0.7
 	 */
 	public static BMPImage readExt(InputStream in) throws IOException
 	{

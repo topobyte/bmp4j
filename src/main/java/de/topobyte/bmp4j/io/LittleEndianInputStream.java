@@ -139,9 +139,6 @@ public class LittleEndianInputStream extends DataInputStream
 		return ret;
 	}
 
-	/**
-	 * @since 0.6
-	 */
 	public long readUnsignedInt() throws IOException
 	{
 		long i1 = readUnsignedByte();
@@ -154,9 +151,6 @@ public class LittleEndianInputStream extends DataInputStream
 		return ret;
 	}
 
-	/**
-	 * @since 0.6
-	 */
 	public long readUnsignedIntLE() throws IOException
 	{
 		long i1 = readUnsignedByte();

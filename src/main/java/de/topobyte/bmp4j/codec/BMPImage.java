@@ -6,7 +6,6 @@ import java.awt.image.BufferedImage;
  * Contains a decoded BMP image, as well as information about the source encoded
  * image.
  * 
- * @since 0.7
  * @author Ian McDonagh
  */
 public class BMPImage
@@ -66,44 +65,41 @@ public class BMPImage
 	 * The width of the BMP image in pixels.
 	 * 
 	 * @return the width of the BMP image, or <tt>-1</tt> if unknown
-	 * @since 0.7alpha2
 	 */
 	public int getWidth()
 	{
-		return infoHeader == null ? -1 : infoHeader.iWidth;
+		return infoHeader == null ? -1 : infoHeader.getWidth();
 	}
 
 	/**
 	 * The height of the BMP image in pixels.
 	 * 
 	 * @return the height of the BMP image, or <tt>-1</tt> if unknown.
-	 * @since 0.7alpha2
 	 */
 	public int getHeight()
 	{
-		return infoHeader == null ? -1 : infoHeader.iHeight;
+		return infoHeader == null ? -1 : infoHeader.getHeight();
 	}
 
 	/**
 	 * The colour depth of the BMP image (bits per pixel).
 	 * 
 	 * @return the colour depth, or <tt>-1</tt> if unknown.
-	 * @since 0.7alpha2
 	 */
 	public int getColourDepth()
 	{
-		return infoHeader == null ? -1 : infoHeader.sBitCount;
+		return infoHeader == null ? -1 : infoHeader.getBitCount();
 	}
 
 	/**
 	 * The number of possible colours for the BMP image.
 	 * 
 	 * @return the number of colours, or <tt>-1</tt> if unknown.
-	 * @since 0.7alpha2
 	 */
 	public int getColourCount()
 	{
-		int bpp = infoHeader.sBitCount == 32 ? 24 : infoHeader.sBitCount;
+		int bpp = infoHeader.getBitCount() == 32 ? 24
+				: infoHeader.getBitCount();
 		return bpp == -1 ? -1 : (int) (1 << bpp);
 	}
 
@@ -113,10 +109,10 @@ public class BMPImage
 	 * the return value has no meaning.
 	 * 
 	 * @return <tt>true</tt> if indexed, <tt>false</tt> if not.
-	 * @since 0.7alpha2
 	 */
 	public boolean isIndexed()
 	{
-		return infoHeader == null ? false : infoHeader.sBitCount <= 8;
+		return infoHeader == null ? false : infoHeader.getBitCount() <= 8;
 	}
+
 }

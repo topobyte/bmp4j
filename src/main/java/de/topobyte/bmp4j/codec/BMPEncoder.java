@@ -64,7 +64,7 @@ public class BMPEncoder
 	{
 		// create info header
 
-		InfoHeader ih = createInfoHeader(img);
+		InfoHeader ih = createInfoHeader5(img);
 
 		// Create colour map if the image uses an indexed colour model.
 		// Images with colour depth of 8 bits or less use an indexed colour
@@ -73,7 +73,7 @@ public class BMPEncoder
 		int mapSize = 0;
 		IndexColorModel icm = null;
 
-		if (ih.sBitCount <= 8) {
+		if (ih.getBitCount() <= 8) {
 			icm = (IndexColorModel) img.getColorModel();
 			mapSize = icm.getMapSize();
 		}
@@ -81,7 +81,7 @@ public class BMPEncoder
 		// Calculate header size
 
 		int headerSize = 14 // file header
-				+ ih.iSize; // info header
+				+ ih.getSize(); // info header
 
 		// Calculate map size
 
@@ -95,27 +95,27 @@ public class BMPEncoder
 
 		int bytesPerLine = 0;
 
-		switch (ih.sBitCount) {
+		switch (ih.getBitCount()) {
 		case 1:
-			bytesPerLine = getBytesPerLine1(ih.iWidth);
+			bytesPerLine = getBytesPerLine1(ih.getWidth());
 			break;
 		case 4:
-			bytesPerLine = getBytesPerLine4(ih.iWidth);
+			bytesPerLine = getBytesPerLine4(ih.getWidth());
 			break;
 		case 8:
-			bytesPerLine = getBytesPerLine8(ih.iWidth);
+			bytesPerLine = getBytesPerLine8(ih.getWidth());
 			break;
 		case 24:
-			bytesPerLine = getBytesPerLine24(ih.iWidth);
+			bytesPerLine = getBytesPerLine24(ih.getWidth());
 			break;
 		case 32:
-			bytesPerLine = ih.iWidth * 4;
+			bytesPerLine = ih.getWidth() * 4;
 			break;
 		}
 
 		// calculate file size
 
-		int fileSize = dataOffset + bytesPerLine * ih.iHeight;
+		int fileSize = dataOffset + bytesPerLine * ih.getHeight();
 
 		// output little endian byte order
 
@@ -128,12 +128,12 @@ public class BMPEncoder
 		ih.write(out);
 
 		// write color map (bit count <= 8)
-		if (ih.sBitCount <= 8) {
+		if (ih.getBitCount() <= 8) {
 			writeColorMap(icm, out);
 		}
 
 		// write raster data
-		switch (ih.sBitCount) {
+		switch (ih.getBitCount()) {
 		case 1:
 			write1(img.getRaster(), out);
 			break;
@@ -153,18 +153,38 @@ public class BMPEncoder
 	}
 
 	/**
-	 * Creates an <tt>InfoHeader</tt> from the source image.
+	 * Creates an <tt>InfoHeader4</tt> from the source image.
 	 * 
 	 * @param img
 	 *            the source image
-	 * @return the resultant <tt>InfoHeader</tt> structure
+	 * @return the resultant <tt>InfoHeader3</tt> structure
 	 */
-	public static InfoHeader createInfoHeader(BufferedImage img)
+	public static InfoHeader3 createInfoHeader3(BufferedImage img)
 	{
-		InfoHeader ret = new InfoHeader();
+		InfoHeader3 ret = new InfoHeader3();
 		ret.iColorsImportant = 0;
 		ret.iColorsUsed = 0;
 		ret.iCompression = 0;
+		ret.iHeight = img.getHeight();
+		ret.iWidth = img.getWidth();
+		ret.sBitCount = (short) img.getColorModel().getPixelSize();
+		ret.iNumColors = 1 << (ret.sBitCount == 32 ? 24 : ret.sBitCount);
+		ret.iImageSize = 0;
+		return ret;
+	}
+
+	/**
+	 * Creates an <tt>InfoHeader5</tt> from the source image.
+	 * 
+	 * @param img
+	 *            the source image
+	 * @return the resultant <tt>InfoHeader5</tt> structure
+	 */
+	public static InfoHeader5 createInfoHeader5(BufferedImage img)
+	{
+		InfoHeader5 ret = new InfoHeader5();
+		ret.iColorsImportant = 0;
+		ret.iColorsUsed = 0;
 		ret.iHeight = img.getHeight();
 		ret.iWidth = img.getWidth();
 		ret.sBitCount = (short) img.getColorModel().getPixelSize();

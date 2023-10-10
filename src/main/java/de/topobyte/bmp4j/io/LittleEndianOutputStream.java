@@ -95,9 +95,6 @@ public class LittleEndianOutputStream extends DataOutputStream
 		super.writeDouble(value);
 	}
 
-	/**
-	 * @since 0.6
-	 */
 	public void writeUnsignedInt(long value) throws IOException
 	{
 		int i1 = (int) (value >> 24);
@@ -111,9 +108,6 @@ public class LittleEndianOutputStream extends DataOutputStream
 		write(i4);
 	}
 
-	/**
-	 * @since 0.6
-	 */
 	public void writeUnsignedIntLE(long value) throws IOException
 	{
 		int i1 = (int) (value >> 24);
