@@ -132,6 +132,10 @@ public class InfoHeader
 		iColorsUsed = in.readIntLE();
 		// Colors important - number of important colors 0 = all
 		iColorsImportant = in.readIntLE();
+
+		int remaining = infoSize - 40;
+		byte[] buf = new byte[remaining];
+		in.read(buf);
 	}
 
 	/**
