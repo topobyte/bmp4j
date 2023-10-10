@@ -82,21 +82,21 @@ public class BMPImage
 	}
 
 	/**
-	 * The colour depth of the BMP image (bits per pixel).
+	 * The color depth of the BMP image (bits per pixel).
 	 * 
-	 * @return the colour depth, or <tt>-1</tt> if unknown.
+	 * @return the color depth, or <tt>-1</tt> if unknown.
 	 */
-	public int getColourDepth()
+	public int getColorDepth()
 	{
 		return infoHeader == null ? -1 : infoHeader.getBitCount();
 	}
 
 	/**
-	 * The number of possible colours for the BMP image.
+	 * The number of possible colors for the BMP image.
 	 * 
-	 * @return the number of colours, or <tt>-1</tt> if unknown.
+	 * @return the number of colors, or <tt>-1</tt> if unknown.
 	 */
-	public int getColourCount()
+	public int getColorCount()
 	{
 		int bpp = infoHeader.getBitCount() == 32 ? 24
 				: infoHeader.getBitCount();
@@ -105,7 +105,7 @@ public class BMPImage
 
 	/**
 	 * Specifies whether this BMP image is indexed, that is, the encoded bitmap
-	 * uses a colour table. If <tt>getColourDepth()</tt> returns <tt>-1</tt>,
+	 * uses a color table. If <tt>getColorDepth()</tt> returns <tt>-1</tt>,
 	 * the return value has no meaning.
 	 * 
 	 * @return <tt>true</tt> if indexed, <tt>false</tt> if not.

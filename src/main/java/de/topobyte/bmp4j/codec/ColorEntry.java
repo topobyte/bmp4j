@@ -5,8 +5,8 @@ import java.io.IOException;
 import de.topobyte.bmp4j.io.LittleEndianInputStream;
 
 /**
- * Represents an RGB colour entry used in the palette of an indexed image
- * (colour depth &lt;= 8).
+ * Represents an RGB color entry used in the palette of an indexed image
+ * (color depth &lt;= 8).
  * 
  * @author Ian McDonagh
  */
@@ -31,7 +31,7 @@ public class ColorEntry
 	public int bReserved;
 
 	/**
-	 * Reads and creates a colour entry from the source input.
+	 * Reads and creates a color entry from the source input.
 	 * 
 	 * @param in
 	 *            the source input
@@ -47,7 +47,7 @@ public class ColorEntry
 	}
 
 	/**
-	 * Creates a colour entry with colour components initialized to <tt>0</tt>.
+	 * Creates a color entry with color components initialized to <tt>0</tt>.
 	 */
 	public ColorEntry()
 	{
@@ -58,7 +58,7 @@ public class ColorEntry
 	}
 
 	/**
-	 * Creates a colour entry with the specified colour components.
+	 * Creates a color entry with the specified color components.
 	 * 
 	 * @param r
 	 *            red component

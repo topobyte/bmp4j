@@ -66,8 +66,8 @@ public class BMPEncoder
 
 		InfoHeader ih = createInfoHeader5(img);
 
-		// Create colour map if the image uses an indexed colour model.
-		// Images with colour depth of 8 bits or less use an indexed colour
+		// Create color map if the image uses an indexed color model.
+		// Images with color depth of 8 bits or less use an indexed color
 		// model.
 
 		int mapSize = 0;
@@ -221,12 +221,12 @@ public class BMPEncoder
 	}
 
 	/**
-	 * Writes the colour map resulting from the source <tt>IndexColorModel</tt>.
+	 * Writes the color map resulting from the source <tt>IndexColorModel</tt>.
 	 * 
 	 * @param icm
 	 *            the source <tt>IndexColorModel</tt>
 	 * @param out
-	 *            the output to which the colour map will be written
+	 *            the output to which the color map will be written
 	 * @throws IOException
 	 *             if an error occurs
 	 */
@@ -323,14 +323,14 @@ public class BMPEncoder
 
 	/**
 	 * Calculates the size in bytes of a bitmap with the specified size and
-	 * colour depth.
+	 * color depth.
 	 * 
 	 * @param w
 	 *            the width in pixels
 	 * @param h
 	 *            the height in pixels
 	 * @param bpp
-	 *            the colour depth (bits per pixel)
+	 *            the color depth (bits per pixel)
 	 * @return the size of the bitmap in bytes
 	 */
 	public static int getBitmapSize(int w, int h, int bpp)
@@ -613,14 +613,14 @@ public class BMPEncoder
 	}
 
 	/**
-	 * Calculates the size in bytes for a colour map with the specified bit
+	 * Calculates the size in bytes for a color map with the specified bit
 	 * count.
 	 * 
 	 * @param sBitCount
-	 *            the bit count, which represents the colour depth
-	 * @return the size of the colour map, in bytes if <tt>sBitCount</tt> is
-	 *         less than or equal to 8, otherwise <tt>0</tt> as colour maps are
-	 *         only used for bitmaps with a colour depth of 8 bits or less.
+	 *            the bit count, which represents the color depth
+	 * @return the size of the color map, in bytes if <tt>sBitCount</tt> is
+	 *         less than or equal to 8, otherwise <tt>0</tt> as color maps are
+	 *         only used for bitmaps with a color depth of 8 bits or less.
 	 */
 	public static int getColorMapSize(short sBitCount)
 	{

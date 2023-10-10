@@ -347,7 +347,7 @@ public class BMPDecoder
 				infoHeader.getHeight(), BufferedImage.TYPE_BYTE_BINARY, icm);
 		// We'll use the raster to set samples instead of RGB values.
 		// The SampleModel of an indexed image interprets samples as
-		// the index of the colour for a pixel, which is perfect for use here.
+		// the index of the color for a pixel, which is perfect for use here.
 		WritableRaster raster = img.getRaster();
 
 		// padding
@@ -375,7 +375,7 @@ public class BMPDecoder
 				int index = getBit(v, b);
 				// int rgb = c[index];
 				// img.setRGB(x, y, rgb);
-				// set the sample (colour index) for the pixel
+				// set the sample (color index) for the pixel
 				raster.setSample(x, y, 0, index);
 			}
 		}
@@ -385,7 +385,7 @@ public class BMPDecoder
 
 	/**
 	 * Reads 4-bit uncompressed bitmap raster data, which is interpreted based
-	 * on the colours specified in the palette.
+	 * on the colors specified in the palette.
 	 * 
 	 * @param infoHeader
 	 *            the <tt>InfoHeader</tt> structure, which was read using
@@ -405,7 +405,7 @@ public class BMPDecoder
 			throws IOException
 	{
 		// 2 pixels per byte or 4 bits per pixel.
-		// Colour for each pixel specified by the color index in the pallette.
+		// Color for each pixel specified by the color index in the pallette.
 
 		byte[] ar = new byte[colorTable.length];
 		byte[] ag = new byte[colorTable.length];
@@ -453,7 +453,7 @@ public class BMPDecoder
 
 	/**
 	 * Reads 8-bit uncompressed bitmap raster data, which is interpreted based
-	 * on the colours specified in the palette.
+	 * on the colors specified in the palette.
 	 * 
 	 * @param infoHeader
 	 *            the <tt>InfoHeader</tt> structure, which was read using
@@ -511,7 +511,7 @@ public class BMPDecoder
 				int b = lis.readUnsignedByte();
 				// int clr = c[b];
 				// img.setRGB(x, y, clr);
-				// set sample (colour index) for pixel
+				// set sample (color index) for pixel
 				raster.setSample(x, y, 0, b);
 			}
 

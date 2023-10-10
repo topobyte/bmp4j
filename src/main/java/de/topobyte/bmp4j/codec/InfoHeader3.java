@@ -33,7 +33,7 @@ public class InfoHeader3 implements InfoHeader
 	 */
 	public short sPlanes;
 	/**
-	 * The bit count, which represents the colour depth (bits per pixel). This
+	 * The bit count, which represents the color depth (bits per pixel). This
 	 * should be either <tt>1</tt>, <tt>4</tt>, <tt>8</tt>, <tt>24</tt> or
 	 * <tt>32</tt>.
 	 */
@@ -61,16 +61,16 @@ public class InfoHeader3 implements InfoHeader
 	 */
 	public int iYpixelsPerM;
 	/**
-	 * Number of colours actually used in the bitmap.
+	 * Number of colors actually used in the bitmap.
 	 */
 	public int iColorsUsed;
 	/**
-	 * Number of important colours (<tt>0</tt> = all).
+	 * Number of important colors (<tt>0</tt> = all).
 	 */
 	public int iColorsImportant;
 
 	/**
-	 * Calculated number of colours, based on the colour depth specified by
+	 * Calculated number of colors, based on the color depth specified by
 	 * {@link #sBitCount sBitCount}.
 	 */
 	public int iNumColors;
