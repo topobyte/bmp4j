@@ -27,6 +27,7 @@ public class BMPDecoder
 {
 
 	private BufferedImage img;
+	private FileHeader fileHeader;
 	private InfoHeader infoHeader;
 
 	/**
@@ -46,24 +47,7 @@ public class BMPDecoder
 
 		/* header [14] */
 
-		// signature "BM" [2]
-		byte[] bsignature = new byte[2];
-		lis.read(bsignature);
-		String signature = new String(bsignature, "UTF-8");
-
-		if (!signature.equals("BM")) {
-			throw new IOException(
-					"Invalid signature '" + signature + "' for BMP format");
-		}
-
-		// file size [4]
-		int fileSize = lis.readIntLE();
-
-		// reserved = 0 [4]
-		int reserved = lis.readIntLE();
-
-		// DataOffset [4] file offset to raster data
-		int dataOffset = lis.readIntLE();
+		fileHeader = readHeader(lis);
 
 		/* info header [40] */
 
@@ -106,6 +90,11 @@ public class BMPDecoder
 		return (nibbles >> (4 * (1 - index))) & 0xF;
 	}
 
+	public FileHeader getFileHeader()
+	{
+		return fileHeader;
+	}
+
 	/**
 	 * The <tt>InfoHeader</tt> structure, which provides information about the
 	 * BMP data.
@@ -136,6 +125,31 @@ public class BMPDecoder
 			ag[i] = (byte) colorTable[i].bGreen;
 			ab[i] = (byte) colorTable[i].bBlue;
 		}
+	}
+
+	public static FileHeader readHeader(LittleEndianInputStream lis)
+			throws IOException
+	{
+		// signature "BM" [2]
+		byte[] bsignature = new byte[2];
+		lis.read(bsignature);
+		String signature = new String(bsignature, "UTF-8");
+
+		if (!signature.equals("BM")) {
+			throw new IOException(
+					"Invalid signature '" + signature + "' for BMP format");
+		}
+
+		// file size [4]
+		int fileSize = lis.readIntLE();
+
+		// reserved = 0 [4]
+		int reserved = lis.readIntLE();
+
+		// DataOffset [4] file offset to raster data
+		int dataOffset = lis.readIntLE();
+
+		return new FileHeader(signature, fileSize, reserved, dataOffset);
 	}
 
 	/**
