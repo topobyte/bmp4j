@@ -14,6 +14,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import de.topobyte.bmp4j.io.CountingInputStream;
 import de.topobyte.bmp4j.io.LittleEndianInputStream;
@@ -624,6 +626,28 @@ public class BMPDecoder
 	public static BufferedImage read(File file) throws IOException
 	{
 		FileInputStream fin = new FileInputStream(file);
+		try {
+			return read(new BufferedInputStream(fin));
+		} finally {
+			try {
+				fin.close();
+			} catch (IOException ex) {
+			}
+		}
+	}
+
+	/**
+	 * Reads and decodes BMP data from the source file.
+	 * 
+	 * @param file
+	 *            the source file
+	 * @throws IOException
+	 *             if an error occurs
+	 * @return the decoded image read from the source file
+	 */
+	public static BufferedImage read(Path file) throws IOException
+	{
+		InputStream fin = Files.newInputStream(file);
 		try {
 			return read(new BufferedInputStream(fin));
 		} finally {
