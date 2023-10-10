@@ -1,12 +1,3 @@
-/*
- * LittleEndianRandomAccessFile.java
- *
- * Created on 07 November 2006, 03:04
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
-
 package de.topobyte.bmp4j.io;
 
 import java.io.File;

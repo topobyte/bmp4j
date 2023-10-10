@@ -1,12 +1,3 @@
-/*
- * ColorEntry.java
- *
- * Created on 10 May 2006, 08:29
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
-
 package de.topobyte.bmp4j.codec;
 
 import java.io.IOException;

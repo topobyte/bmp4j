@@ -1,12 +1,3 @@
-/*
- * BMPImage.java
- *
- * Created on February 19, 2007, 8:08 AM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
-
 package de.topobyte.bmp4j.codec;
 
 import java.awt.image.BufferedImage;

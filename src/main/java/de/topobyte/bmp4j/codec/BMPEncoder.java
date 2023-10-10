@@ -1,12 +1,3 @@
-/*
- * BMPEncoder.java
- *
- * Created on 11 May 2006, 04:19
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
-
 package de.topobyte.bmp4j.codec;
 
 import java.awt.image.BufferedImage;
