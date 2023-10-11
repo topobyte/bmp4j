@@ -703,6 +703,28 @@ public class BMPDecoder
 	}
 
 	/**
+	 * Reads and decodes BMP data from the source file, together with metadata.
+	 * 
+	 * @param file
+	 *            the source file
+	 * @throws IOException
+	 *             if an error occurs
+	 * @return the decoded image read from the source file
+	 */
+	public static BMPImage readExt(Path file) throws IOException
+	{
+		InputStream fin = Files.newInputStream(file);
+		try {
+			return readExt(new BufferedInputStream(fin));
+		} finally {
+			try {
+				fin.close();
+			} catch (IOException ex) {
+			}
+		}
+	}
+
+	/**
 	 * Reads and decodes BMP data from the source input, together with metadata.
 	 * 
 	 * @param in

@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import de.topobyte.bmp4j.io.LittleEndianOutputStream;
 
@@ -37,6 +39,31 @@ public class BMPEncoder
 	public static void write(BufferedImage img, File file) throws IOException
 	{
 		FileOutputStream fout = new FileOutputStream(file);
+		try {
+			BufferedOutputStream out = new BufferedOutputStream(fout);
+			write(img, out);
+			out.flush();
+		} finally {
+			try {
+				fout.close();
+			} catch (IOException ex) {
+			}
+		}
+	}
+
+	/**
+	 * Encodes and writes BMP data the output file
+	 * 
+	 * @param img
+	 *            the image to encode
+	 * @param file
+	 *            the file to which encoded data will be written
+	 * @throws IOException
+	 *             if an error occurs
+	 */
+	public static void write(BufferedImage img, Path file) throws IOException
+	{
+		OutputStream fout = Files.newOutputStream(file);
 		try {
 			BufferedOutputStream out = new BufferedOutputStream(fout);
 			write(img, out);
@@ -618,9 +645,9 @@ public class BMPEncoder
 	 * 
 	 * @param sBitCount
 	 *            the bit count, which represents the color depth
-	 * @return the size of the color map, in bytes if <tt>sBitCount</tt> is
-	 *         less than or equal to 8, otherwise <tt>0</tt> as color maps are
-	 *         only used for bitmaps with a color depth of 8 bits or less.
+	 * @return the size of the color map, in bytes if <tt>sBitCount</tt> is less
+	 *         than or equal to 8, otherwise <tt>0</tt> as color maps are only
+	 *         used for bitmaps with a color depth of 8 bits or less.
 	 */
 	public static int getColorMapSize(short sBitCount)
 	{
